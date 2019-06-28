@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-import-export = "*"
+Django = ">=2"
+celery = "*"
+django-author = "*"
+
+[requires]
+python_version = "3.5"
+
+[dev-packages]
+pudb = "*"

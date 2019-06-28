@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo docker run -it --volume=/home/timothy/pu/projects/auto-mat/django-import-export-celery:/proj:rw --entrypoint=/bin/bash --workdir=/proj -p 8001:8080 klub_web

@@ -1,0 +1,8 @@
+*.swp
+*.pyc
+build/
+dist/
+*.sqlite3
+*__pycache__*
+example/django-import-export-celery-import-change-summaries/
+example/django-import-export-celery-import-jobs/
