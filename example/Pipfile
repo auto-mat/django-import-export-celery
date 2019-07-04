@@ -8,6 +8,8 @@ django-import-export = "*"
 Django = ">=2"
 celery = "*"
 django-author = "*"
+psycopg2-binary = "*"
+redis = "*"
 
 [requires]
 python_version = "3.5"

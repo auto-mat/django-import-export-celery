@@ -14,3 +14,11 @@ class ImportJobAdmin(admin.ModelAdmin):
         'author',
         'updated_by',
     )
+    readonly_fields = (
+        'change_summary',
+        'imported',
+        'processing_initiated',
+        'errors',
+        'author',
+        'updated_by',
+    )

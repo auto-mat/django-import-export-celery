@@ -1,8 +1,12 @@
 from __future__ import absolute_import
 
 import os
+import sys
 
 from celery import Celery
+
+sys.path.append("../")
+
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')

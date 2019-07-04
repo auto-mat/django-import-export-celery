@@ -21,7 +21,12 @@ importables = getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {})
 
 @shared_task(bind=False)
 def run_import_job(pk):
-    import_job = models.ImportJob.objects.get(pk=pk)
+    while True:
+        try:
+            import_job = models.ImportJob.objects.get(pk=pk)
+            break
+        except models.ImportJob.DoesNotExist:
+            pass
     model_config = ModelConfig(**importables[import_job.model])
 
     for format in DEFAULT_FORMATS:
@@ -35,11 +40,11 @@ def run_import_job(pk):
             data = force_text(data, 'utf8')
         dataset = input_format.create_dataset(data)
     except UnicodeDecodeError as e:
-        import_job.errors += _("Imported file has a wrong encoding: %s" % e)
+        import_job.errors += _("Imported file has a wrong encoding: %s" % e) + "\n"
         import_job.save()
         return
     except Exception as e:
-        import_job.errors += _("Error reading file: %s" % e)
+        import_job.errors += _("Error reading file: %s" % e) + "\n"
         import_job.save()
         return
     resource = model_config.resource()
