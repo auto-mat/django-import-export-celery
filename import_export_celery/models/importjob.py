@@ -86,4 +86,4 @@ def importjob_post_save(sender, instance, **kwargs):
     if not instance.processing_initiated:
         instance.processing_initiated = datetime.now()
         instance.save()
-        run_import_job.delay(instance.pk)
+        run_import_job.delay(instance.pk, dry_run=True)

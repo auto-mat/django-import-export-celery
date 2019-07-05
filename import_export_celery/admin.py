@@ -2,7 +2,7 @@
 # Copyright (C) 2019 o.s. Auto*Mat
 from django.contrib import admin
 
-from . import models
+from . import models, tasks
 
 @admin.register(models.ImportJob)
 class ImportJobAdmin(admin.ModelAdmin):
@@ -21,4 +21,8 @@ class ImportJobAdmin(admin.ModelAdmin):
         'errors',
         'author',
         'updated_by',
+    )
+
+    actions = (
+        tasks.run_import_job_action,
     )
