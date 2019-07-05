@@ -34,7 +34,6 @@ def run_import_job(pk, dry_run=True):
         if import_job.format == format.CONTENT_TYPE:
             input_format = format()
             break
-    #import pudb;pudb.set_trace()
     try:  # Copied from https://github.com/django-import-export/django-import-export/blob/3c082f98afe7996e79f936418fced3094f141c26/import_export/admin.py#L260 sorry
         data = import_job.file.read()
         if not input_format.is_binary():
