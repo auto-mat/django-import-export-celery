@@ -66,4 +66,4 @@ def run_import_job_action(modeladmin, request, queryset):
     for instance in queryset:
         run_import_job.delay(instance.pk, dry_run=False)
 
-run_import_job_action.short_description = _("Preform import")
+run_import_job_action.short_description = _("Perform import")
