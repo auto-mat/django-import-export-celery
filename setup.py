@@ -6,7 +6,7 @@ import subprocess
 here = os.path.abspath(os.path.dirname(__file__))
 import codecs
 
-requires = ['Django', 'django-import-export']
+requires = ['Django', 'django-import-export', 'django-author']
 
 version = subprocess.check_output(['git','describe','--abbrev=0','--tags']).decode("utf-8")
 
