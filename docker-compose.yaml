@@ -1,0 +1,40 @@
+version: '2'
+services:
+ web:
+  build: .
+  entrypoint: /bin/bash
+  ports:
+   - "8001:8000"
+  links:
+   - postgres
+   - redis
+  tty: true
+  stdin_open: true
+  working_dir: /proj/
+  user: test
+  volumes:
+   - ./:/proj/
+   - ./pipenv:/home/test
+ celery:
+  build: .
+  entrypoint: pipenv run celery worker -A project.celery
+  links:
+   - postgres
+   - redis
+  tty: true
+  stdin_open: true
+  working_dir: /proj/example
+  user: test
+  volumes:
+   - ./:/proj/
+   - ./pipenv:/home/test
+ redis:
+  image: redis
+ postgres:
+  image: mdillon/postgis:9.6-alpine
+  volumes:
+   - ./db:/var/lib/postgresql/data
+  environment:
+   POSTGRES_PASSWORD: foobar
+   POSTGRES_USER: pguser
+   PGDATA: /var/lib/postgresql/data
