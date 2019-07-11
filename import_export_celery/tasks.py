@@ -16,18 +16,28 @@ from import_export.formats.base_formats import DEFAULT_FORMATS
 from . import models
 from .model_config import ModelConfig
 
+from celery.utils.log import get_task_logger
+import logging
+
+logger = logging.getLogger(__name__)
+
+log = get_task_logger(__name__)
+
 
 importables = getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {})
 
 
 @task(bind=False)
 def run_import_job(pk, dry_run=True):
+    log.info("Importing %s dry-run %s" % (pk, dry_run))
     while True:
         try:
             import_job = models.ImportJob.objects.get(pk=pk)
             break
         except models.ImportJob.DoesNotExist:
             pass
+    if dry_run:
+        import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
 
     for format in DEFAULT_FORMATS:
@@ -44,11 +54,17 @@ def run_import_job(pk, dry_run=True):
         import_job.save()
         return
     except Exception as e:
-        import_job.errors += _("Error reading file: %s" % e) + "\n"
+        import_job.errors += _("Error reading file: %s") % e + "\n"
         import_job.save()
         return
     resource = model_config.resource()
     result = resource.import_data(dataset, dry_run=dry_run)
+    for error in result.base_errors:
+        import_job.errors += "\n%s\n%s\n" % (error.error, error.traceback)
+    for line, errors in result.row_errors():
+        for error in errors:
+            import_job.errors += _("Line: %s - %s\n\t%s\n%s") % (line, error.error, ",".join(error.row.values()), error.traceback)
+
     if dry_run:
         summary = '<table  border="1">' # TODO refactor the existing template so we can use it for this
         # https://github.com/django-import-export/django-import-export/blob/6575c3e1d89725701e918696fbc531aeb192a6f7/import_export/templates/admin/import_export/import.html
@@ -63,6 +79,7 @@ def run_import_job(pk, dry_run=True):
 
 def run_import_job_action(modeladmin, request, queryset):
     for instance in queryset:
+        logger.info("Importing %s dry-run: False" % (instance.pk))
         run_import_job.delay(instance.pk, dry_run=False)
 
 run_import_job_action.short_description = _("Perform import")
