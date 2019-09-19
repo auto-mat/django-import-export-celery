@@ -63,7 +63,7 @@ def run_import_job(pk, dry_run=True):
         import_job.errors += "\n%s\n%s\n" % (error.error, error.traceback)
     for line, errors in result.row_errors():
         for error in errors:
-            import_job.errors += _("Line: %s - %s\n\t%s\n%s") % (line, error.error, ",".join(error.row.values()), error.traceback)
+            import_job.errors += _("Line: %s - %s\n\t%s\n%s") % (line, error.error, ",".join(str(s) for s in error.row.values()), error.traceback)
 
     if dry_run:
         summary = '<table  border="1">' # TODO refactor the existing template so we can use it for this
