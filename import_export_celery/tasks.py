@@ -66,12 +66,19 @@ def run_import_job(pk, dry_run=True):
             import_job.errors += _("Line: %s - %s\n\t%s\n%s") % (line, error.error, ",".join(str(s) for s in error.row.values()), error.traceback)
 
     if dry_run:
-        summary = '<table  border="1">' # TODO refactor the existing template so we can use it for this
+        summary = '<html>'
+        summary += '<head>'
+        summary += '<meta charset="utf-8">'
+        summary += '</head>'
+        summary += '<body>'
+        summary += '<table  border="1">' # TODO refactor the existing template so we can use it for this
         # https://github.com/django-import-export/django-import-export/blob/6575c3e1d89725701e918696fbc531aeb192a6f7/import_export/templates/admin/import_export/import.html
         summary += '<tr><td>change_type</td><td>' + '</td><td>'.join([f.column_name for f in resource.get_user_visible_fields()]) + '</td></tr>'
         cols = lambda row: '</td><td>'.join([field for field in row.diff])
         summary += '<tr><td>' + '</td></tr><tr><td>'.join([row.import_type + '</td><td>' + cols(row) for row in result.valid_rows()]) + '</tr>'
         summary += '</table>'
+        summary += '</body>'
+        summary += '</html>'
         import_job.change_summary.save(os.path.split(import_job.file.name)[1]+".html", ContentFile(summary))
     else:
         import_job.imported =  datetime.now()
