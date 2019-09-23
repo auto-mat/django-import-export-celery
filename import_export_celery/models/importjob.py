@@ -80,6 +80,12 @@ class ImportJob(models.Model):
         choices=[(x,x) for x in getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {}).keys()],
     )
 
+    job_status = models.CharField(
+        verbose_name=_("Status of the job"),
+        max_length=160,
+        blank=True,
+    )
+
 
 @receiver(post_save, sender=ImportJob)
 def importjob_post_save(sender, instance, **kwargs):

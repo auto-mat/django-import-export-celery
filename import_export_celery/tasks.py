@@ -7,6 +7,7 @@ from celery import task
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.cache import cache
 
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
@@ -27,15 +28,18 @@ log = get_task_logger(__name__)
 importables = getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {})
 
 
-@task(bind=False)
-def run_import_job(pk, dry_run=True):
-    log.info("Importing %s dry-run %s" % (pk, dry_run))
-    while True:
-        try:
-            import_job = models.ImportJob.objects.get(pk=pk)
-            break
-        except models.ImportJob.DoesNotExist:
-            pass
+def change_job_status(import_job, job_status, dry_run):
+    if dry_run:
+        job_status = "[Dry import] " + job_status
+    else:
+        job_status = "[Full import] " + job_status
+    cache.set('import_job_status_%s' % import_job.pk, job_status)
+    import_job.job_status = job_status
+    import_job.save()
+
+
+def _run_import_job(import_job, dry_run=True):
+    change_job_status(import_job, "1/5 Import started", dry_run)
     if dry_run:
         import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
@@ -51,14 +55,27 @@ def run_import_job(pk, dry_run=True):
         dataset = input_format.create_dataset(data)
     except UnicodeDecodeError as e:
         import_job.errors += _("Imported file has a wrong encoding: %s" % e) + "\n"
+        change_job_status(import_job, "Imported file has a wrong encoding", dry_run)
         import_job.save()
         return
     except Exception as e:
         import_job.errors += _("Error reading file: %s") % e + "\n"
+        change_job_status(import_job, "Error reading file", dry_run)
         import_job.save()
         return
-    resource = model_config.resource()
+    change_job_status(import_job, "2/5 Processing import data", dry_run)
+
+    class Resource(model_config.resource):
+        def before_import_row(self, row, **kwargs):
+            if 'row_number' in kwargs:
+                row_number = kwargs['row_number']
+                if row_number%100 == 0 or row_number == 1:
+                    change_job_status(import_job, "3/5 Importing row %s/%s" % (row_number, len(dataset)), dry_run)
+            return super(Resource, self).before_import_row(row, **kwargs)
+    resource = Resource()
+
     result = resource.import_data(dataset, dry_run=dry_run)
+    change_job_status(import_job, "4/5 Generating import summary", dry_run)
     for error in result.base_errors:
         import_job.errors += "\n%s\n%s\n" % (error.error, error.traceback)
     for line, errors in result.row_errors():
@@ -82,16 +99,35 @@ def run_import_job(pk, dry_run=True):
         import_job.change_summary.save(os.path.split(import_job.file.name)[1]+".html", ContentFile(summary.encode('utf-8')))
     else:
         import_job.imported =  datetime.now()
+    change_job_status(import_job, "5/5 Import job finished", dry_run)
     import_job.save()
+
+
+@task(bind=False)
+def run_import_job(pk, dry_run=True):
+    log.info("Importing %s dry-run %s" % (pk, dry_run))
+    import_job = models.ImportJob.objects.get(pk=pk)
+    try:
+        _run_import_job(import_job, dry_run)
+    except Exception as e:
+        import_job.errors += _("Import error %s") % e + "\n"
+        change_job_status(import_job, "Import error", dry_run)
+        import_job.save()
+        return
+
 
 def run_import_job_action(modeladmin, request, queryset):
     for instance in queryset:
         logger.info("Importing %s dry-run: False" % (instance.pk))
         run_import_job.delay(instance.pk, dry_run=False)
 
+run_import_job_action.short_description = _("Perform import")
+
+
 def run_import_job_action_dry(modeladmin, request, queryset):
     for instance in queryset:
         logger.info("Importing %s dry-run: True" % (instance.pk))
         run_import_job.delay(instance.pk, dry_run=True)
 
-run_import_job_action.short_description = _("Perform import")
+
+run_import_job_action_dry.short_description = _("Perform dry import")
