@@ -24,4 +24,5 @@ class ImportJobAdmin(admin.ModelAdmin):
 
     actions = (
         tasks.run_import_job_action,
+        tasks.run_import_job_action_dry,
     )

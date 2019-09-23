@@ -89,4 +89,9 @@ def run_import_job_action(modeladmin, request, queryset):
         logger.info("Importing %s dry-run: False" % (instance.pk))
         run_import_job.delay(instance.pk, dry_run=False)
 
+def run_import_job_action_dry(modeladmin, request, queryset):
+    for instance in queryset:
+        logger.info("Importing %s dry-run: True" % (instance.pk))
+        run_import_job.delay(instance.pk, dry_run=True)
+
 run_import_job_action.short_description = _("Perform import")
