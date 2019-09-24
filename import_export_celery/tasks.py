@@ -79,7 +79,7 @@ def run_import_job(pk, dry_run=True):
         summary += '</table>'
         summary += '</body>'
         summary += '</html>'
-        import_job.change_summary.save(os.path.split(import_job.file.name)[1]+".html", ContentFile(summary))
+        import_job.change_summary.save(os.path.split(import_job.file.name)[1]+".html", ContentFile(summary.encode('utf-8')))
     else:
         import_job.imported =  datetime.now()
     import_job.save()
