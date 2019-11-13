@@ -1,7 +1,7 @@
 django-import-export-celery: process slow django imports and exports in celery
 ==============================================================================
 
-django-import-export-celery helps you process long running imports in celery.
+django-import-export-celery helps you process long running imports and exports in celery.
 
 Setting up imports with celery
 ------------------------------
@@ -55,4 +55,57 @@ You will find an example django application that uses django-import-export-celer
 
 .. image:: screenshots/new-winner.png
 
-Exports are not yet supported but they hopefully will be in a future release. PRs welcome.
+
+Setting up exports
+------------------
+
+As with imports, a fully configured example project can be found in the `example` directory.
+
+1. Add a `export_resource_classes` classmethod to the model you want to export.
+
+::
+
+    @classmethod
+    def export_resource_classes(cls):
+        return {
+            'winners': ('Winners resource', WinnersResource),
+            'winners_all_caps': ('Winners with all caps column resource', WinnersWithAllCapsResource),
+        }
+
+This should return a dictionary of tuples. The keys should be unique unchanging strings, the tuples should consist of a `resource <https://django-import-export.readthedocs.io/en/latest/getting_started.html#creating-import-export-resource>`_ and a human friendly description of that resource.
+
+2. Add the `create_export_job_action` to the model's `ModelAdmin`.
+
+::
+    from django.contrib import admin
+    from import_export_celery.admin_actions import create_export_job_action
+
+    from . import models
+
+
+    @admin.register(models.Winner)
+    class WinnerAdmin(admin.ModelAdmin):
+        list_display = (
+            'name',
+        )
+
+        actions = (
+            create_export_job_action,
+        )
+
+3. Done!
+
+Performing exports with celery
+------------------------------
+
+1. Open up the object list for your model in django admin, select the objects you wish to export, and select the `Export with celery` admin action.
+
+2. Select the file format and resource you want to use to export the data.
+
+3. Save the model
+
+4. You will receive an email when the export is done, click on the link in the email
+
+5. Click on the link near the bottom of the page titled `Exported file`.
+
+

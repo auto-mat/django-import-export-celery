@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2019 o.s. Auto*Mat
+from django import forms
 from django.contrib import admin
 from django.core.cache import cache
 
-from . import models, tasks
+from . import admin_actions, models
 
 @admin.register(models.ImportJob)
 class ImportJobAdmin(admin.ModelAdmin):
@@ -32,6 +33,45 @@ class ImportJobAdmin(admin.ModelAdmin):
             return obj.job_status
 
     actions = (
-        tasks.run_import_job_action,
-        tasks.run_import_job_action_dry,
+        admin_actions.run_import_job_action,
+        admin_actions.run_import_job_action_dry,
+    )
+
+
+class ExportJobForm(forms.ModelForm):
+    class Meta:
+        model = models.ExportJob
+        exclude = (
+            'site_of_origin',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['resource'].widget = forms.Select(choices=self.instance.get_resource_choices())
+
+
+@admin.register(models.ExportJob)
+class ExportJobAdmin(admin.ModelAdmin):
+    form = ExportJobForm
+    list_display = (
+        'model',
+        'app_label',
+        'file',
+        'author',
+        'updated_by',
+    )
+    readonly_fields = (
+        'author',
+        'updated_by',
+        'app_label',
+        'model',
+        'file',
+        'processing_initiated',
+    )
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    actions = (
+        admin_actions.run_export_job_action,
     )

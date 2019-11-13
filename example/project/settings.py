@@ -133,3 +133,5 @@ MEDIA_ROOT = BASE_DIR
 IMPORT_EXPORT_CELERY_MODELS = {
     "Winner": {'app_label': 'winners', 'model_name': 'Winner'}
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

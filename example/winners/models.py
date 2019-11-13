@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from import_export.resources import ModelResource
+from import_export.fields import Field
+
 
 class Winner(models.Model):
     name = models.CharField(
@@ -9,3 +12,22 @@ class Winner(models.Model):
         blank=False,
         default='',
     )
+
+    @classmethod
+    def export_resource_classes(cls):
+        return {
+            'winners': ('Winners resource', WinnersResource),
+            'winners_all_caps': ('Winners with all caps column resource', WinnersWithAllCapsResource),
+        }
+
+
+class WinnersResource(ModelResource):
+    class Meta:
+        model = Winner
+
+
+class WinnersWithAllCapsResource(WinnersResource):
+    name_all_caps = Field()
+
+    def dehydrate_name_all_caps(self, winner):
+        return winner.name.upper()

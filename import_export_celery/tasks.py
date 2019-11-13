@@ -8,7 +8,9 @@ from celery import task
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.cache import cache
+from django.core.mail import send_mail
 
+from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 
@@ -38,16 +40,21 @@ def change_job_status(import_job, job_status, dry_run):
     import_job.save()
 
 
+def get_format(job):
+    for format in DEFAULT_FORMATS:
+        if job.format == format.CONTENT_TYPE:
+            return format()
+            break
+
+
+
 def _run_import_job(import_job, dry_run=True):
     change_job_status(import_job, "1/5 Import started", dry_run)
     if dry_run:
         import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
 
-    for format in DEFAULT_FORMATS:
-        if import_job.format == format.CONTENT_TYPE:
-            input_format = format()
-            break
+    import_format = get_format(import_job)
     try:  # Copied from https://github.com/django-import-export/django-import-export/blob/3c082f98afe7996e79f936418fced3094f141c26/import_export/admin.py#L260 sorry
         data = import_job.file.read()
         if not input_format.is_binary():
@@ -116,18 +123,36 @@ def run_import_job(pk, dry_run=True):
         return
 
 
-def run_import_job_action(modeladmin, request, queryset):
-    for instance in queryset:
-        logger.info("Importing %s dry-run: False" % (instance.pk))
-        run_import_job.delay(instance.pk, dry_run=False)
-
-run_import_job_action.short_description = _("Perform import")
-
-
-def run_import_job_action_dry(modeladmin, request, queryset):
-    for instance in queryset:
-        logger.info("Importing %s dry-run: True" % (instance.pk))
-        run_import_job.delay(instance.pk, dry_run=True)
-
-
-run_import_job_action_dry.short_description = _("Perform dry import")
+@task(bind=False)
+def run_export_job(pk):
+    log.info("Exporting %s" % pk)
+    export_job = models.ExportJob.objects.get(pk=pk)
+    resource_class = export_job.get_resource_class()
+    data = resource_class().export(export_job.get_queryset())
+    format = get_format(export_job)
+    serialized = format.export_data(data)
+    filename = "{app}-{model}-{date}.{extension}".format(
+        app=export_job.app_label,
+        model=export_job.model,
+        date=str(datetime.now()),
+        extension=format.get_extension(),
+    )
+    export_job.file.save(filename, ContentFile(serialized))
+    if export_job.email_on_completion:
+        send_mail(
+            _('Django: Export job completed'),
+            _('Your export job on model {app_label}.{model} has completed. You can download the file at the following link:\n\n{link}').format(
+                app_label=export_job.app_label,
+                model=export_job.model,
+                link=export_job.site_of_origin + reverse(
+                    'admin:%s_%s_change' % (
+                        export_job._meta.app_label,
+                        export_job._meta.model_name,
+                    ),
+                    args=[export_job.pk],
+                ),
+            ),
+            settings.SERVER_EMAIL,
+            [export_job.updated_by.email],
+        )
+    return

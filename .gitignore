@@ -6,6 +6,7 @@ dist/
 *__pycache__*
 example/django-import-export-celery-import-change-summaries/
 example/django-import-export-celery-import-jobs/
+example/django-import-export-celery-export-jobs/
 pipenv/
 django_import_export_celery.egg-info/
 db/
