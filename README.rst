@@ -77,6 +77,7 @@ This should return a dictionary of tuples. The keys should be unique unchanging 
 2. Add the `create_export_job_action` to the model's `ModelAdmin`.
 
 ::
+
     from django.contrib import admin
     from import_export_celery.admin_actions import create_export_job_action
 
