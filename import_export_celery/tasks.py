@@ -32,9 +32,9 @@ importables = getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {})
 
 def change_job_status(job, direction, job_status, dry_run=False):
     if dry_run:
-        job_status = "[Dry %s] " % direction + job_status
+        job_status = "[Dry run] " + job_status
     else:
-        job_status = "[Full %s] " % direction + job_status
+        job_status = job_status
     cache.set(direction + '_job_status_%s' % job.pk, job_status)
     job.job_status = job_status
     job.save()

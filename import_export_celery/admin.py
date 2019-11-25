@@ -29,12 +29,14 @@ class ImportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
         'updated_by',
     )
     readonly_fields = (
+        'job_status_info',
         'change_summary',
         'imported',
         'errors',
         'author',
         'updated_by',
     )
+    exclude = ('job_status', )
 
     actions = (
         admin_actions.run_import_job_action,
@@ -75,6 +77,7 @@ class ExportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
         'file',
         'processing_initiated',
     )
+    exclude = ('job_status', )
 
     def has_add_permission(self, request, obj=None):
         return False
