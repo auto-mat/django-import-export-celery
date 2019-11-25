@@ -54,9 +54,15 @@ class ExportJob(models.Model):
         default=None,
     )
 
+    job_status = models.CharField(
+        verbose_name=_("Status of the job"),
+        max_length=160,
+        blank=True,
+    )
+
     format = models.CharField(
         verbose_name=_("Format of file to be exported"),
-        max_length=40,
+        max_length=255,
         choices=[(f.CONTENT_TYPE, f.CONTENT_TYPE) for f in DEFAULT_FORMATS],
         # TODO only include formats that pass the tests in import_export get_export_formats
         # https://github.com/django-import-export/django-import-export/blob/master/import_export/admin.py#L121

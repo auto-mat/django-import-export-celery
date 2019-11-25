@@ -30,14 +30,14 @@ log = get_task_logger(__name__)
 importables = getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {})
 
 
-def change_job_status(import_job, job_status, dry_run):
+def change_job_status(job, direction, job_status, dry_run=False):
     if dry_run:
-        job_status = "[Dry import] " + job_status
+        job_status = "[Dry %s] " % direction + job_status
     else:
-        job_status = "[Full import] " + job_status
-    cache.set('import_job_status_%s' % import_job.pk, job_status)
-    import_job.job_status = job_status
-    import_job.save()
+        job_status = "[Full %s] " % direction + job_status
+    cache.set(direction + '_job_status_%s' % job.pk, job_status)
+    job.job_status = job_status
+    job.save()
 
 
 def get_format(job):
@@ -49,7 +49,7 @@ def get_format(job):
 
 
 def _run_import_job(import_job, dry_run=True):
-    change_job_status(import_job, "1/5 Import started", dry_run)
+    change_job_status(import_job, 'import', "1/5 Import started", dry_run)
     if dry_run:
         import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
@@ -62,27 +62,27 @@ def _run_import_job(import_job, dry_run=True):
         dataset = input_format.create_dataset(data)
     except UnicodeDecodeError as e:
         import_job.errors += _("Imported file has a wrong encoding: %s" % e) + "\n"
-        change_job_status(import_job, "Imported file has a wrong encoding", dry_run)
+        change_job_status(import_job, 'import', "Imported file has a wrong encoding", dry_run)
         import_job.save()
         return
     except Exception as e:
         import_job.errors += _("Error reading file: %s") % e + "\n"
-        change_job_status(import_job, "Error reading file", dry_run)
+        change_job_status(import_job, 'import', "Error reading file", dry_run)
         import_job.save()
         return
-    change_job_status(import_job, "2/5 Processing import data", dry_run)
+    change_job_status(import_job, 'import', "2/5 Processing import data", dry_run)
 
     class Resource(model_config.resource):
         def before_import_row(self, row, **kwargs):
             if 'row_number' in kwargs:
                 row_number = kwargs['row_number']
                 if row_number%100 == 0 or row_number == 1:
-                    change_job_status(import_job, "3/5 Importing row %s/%s" % (row_number, len(dataset)), dry_run)
+                    change_job_status(import_job, 'import', "3/5 Importing row %s/%s" % (row_number, len(dataset)), dry_run)
             return super(Resource, self).before_import_row(row, **kwargs)
     resource = Resource()
 
     result = resource.import_data(dataset, dry_run=dry_run)
-    change_job_status(import_job, "4/5 Generating import summary", dry_run)
+    change_job_status(import_job, 'import', "4/5 Generating import summary", dry_run)
     for error in result.base_errors:
         import_job.errors += "\n%s\n%s\n" % (error.error, error.traceback)
     for line, errors in result.row_errors():
@@ -106,7 +106,7 @@ def _run_import_job(import_job, dry_run=True):
         import_job.change_summary.save(os.path.split(import_job.file.name)[1]+".html", ContentFile(summary.encode('utf-8')))
     else:
         import_job.imported =  datetime.now()
-    change_job_status(import_job, "5/5 Import job finished", dry_run)
+    change_job_status(import_job, 'import', "5/5 Import job finished", dry_run)
     import_job.save()
 
 
@@ -118,7 +118,7 @@ def run_import_job(pk, dry_run=True):
         _run_import_job(import_job, dry_run)
     except Exception as e:
         import_job.errors += _("Import error %s") % e + "\n"
-        change_job_status(import_job, "Import error", dry_run)
+        change_job_status(import_job, 'import', "Import error", dry_run)
         import_job.save()
         return
 
@@ -128,15 +128,34 @@ def run_export_job(pk):
     log.info("Exporting %s" % pk)
     export_job = models.ExportJob.objects.get(pk=pk)
     resource_class = export_job.get_resource_class()
-    data = resource_class().export(export_job.get_queryset())
+    queryset = export_job.get_queryset()
+    qs_len = len(queryset)
+
+    class Resource(resource_class):
+        def __init__(self, *args, **kwargs):
+            self.row_number = 1
+            super().__init__(*args, **kwargs)
+
+        def export_resource(self, *args, **kwargs):
+            if self.row_number%20 == 0 or self.row_number == 1:
+                change_job_status(export_job, 'export', "Exporting row %s/%s" % (self.row_number, qs_len))
+            self.row_number += 1
+            return super(Resource, self).export_resource(*args, **kwargs)
+
+    resource = Resource()
+
+    data = resource.export(queryset)
     format = get_format(export_job)
     serialized = format.export_data(data)
+    change_job_status(export_job, 'export', "Export complete")
     filename = "{app}-{model}-{date}.{extension}".format(
         app=export_job.app_label,
         model=export_job.model,
         date=str(datetime.now()),
         extension=format.get_extension(),
     )
+    if not format.is_binary():
+        serialized = serialized.encode("utf8")
     export_job.file.save(filename, ContentFile(serialized))
     if export_job.email_on_completion:
         send_mail(

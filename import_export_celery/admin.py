@@ -6,8 +6,19 @@ from django.core.cache import cache
 
 from . import admin_actions, models
 
+
+class JobWithStatusMixin:
+    def job_status_info(self, obj):
+        job_status = cache.get(self.direction + '_job_status_%s' % obj.pk)
+        if job_status:
+            return job_status
+        else:
+            return obj.job_status
+
+
 @admin.register(models.ImportJob)
-class ImportJobAdmin(admin.ModelAdmin):
+class ImportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
+    direction = 'import'
     list_display = (
         'model',
         'job_status_info',
@@ -24,13 +35,6 @@ class ImportJobAdmin(admin.ModelAdmin):
         'author',
         'updated_by',
     )
-
-    def job_status_info(self, obj):
-        job_status = cache.get('import_job_status_%s' % obj.pk)
-        if job_status:
-            return job_status
-        else:
-            return obj.job_status
 
     actions = (
         admin_actions.run_import_job_action,
@@ -51,16 +55,19 @@ class ExportJobForm(forms.ModelForm):
 
 
 @admin.register(models.ExportJob)
-class ExportJobAdmin(admin.ModelAdmin):
+class ExportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
+    direction = 'export'
     form = ExportJobForm
     list_display = (
         'model',
         'app_label',
         'file',
+        'job_status_info',
         'author',
         'updated_by',
     )
     readonly_fields = (
+        'job_status_info',
         'author',
         'updated_by',
         'app_label',
