@@ -97,9 +97,15 @@ def _run_import_job(import_job, dry_run=True):
         summary += '<body>'
         summary += '<table  border="1">' # TODO refactor the existing template so we can use it for this
         # https://github.com/django-import-export/django-import-export/blob/6575c3e1d89725701e918696fbc531aeb192a6f7/import_export/templates/admin/import_export/import.html
-        summary += '<tr><td>change_type</td><td>' + '</td><td>'.join([f.column_name for f in resource.get_user_visible_fields()]) + '</td></tr>'
-        cols = lambda row: '</td><td>'.join([field for field in row.diff])
-        summary += '<tr><td>' + '</td></tr><tr><td>'.join([row.import_type + '</td><td>' + cols(row) for row in result.valid_rows()]) + '</tr>'
+        if not result.invalid_rows:
+            cols = lambda row: '</td><td>'.join([field for field in row.diff])
+            summary += '<tr><td>change_type</td><td>' + '</td><td>'.join([f.column_name for f in resource.get_user_visible_fields()]) + '</td></tr>'
+            summary += '<tr><td>' + '</td></tr><tr><td>'.join([row.import_type + '</td><td>' + cols(row) for row in result.valid_rows()]) + '</tr>'
+        else:
+            cols = lambda row: '</td><td>'.join([str(field) for field in row.values])
+            cols_error = lambda row: ''.join(['<mark>' + key + '</mark>' + '<br>' + row.error.message_dict[key][0] + '<br>' for key in row.error.message_dict.keys()])
+            summary += '<tr><td>row</td>' + '<td>errors</td><td>' + '</td><td>'.join([f.column_name for f in resource.get_user_visible_fields()]) + '</td></tr>'
+            summary += '<tr><td>' + '</td><td></td></tr><tr><td>'.join([str(row.number) + '</td><td>' + cols_error(row) + '</td><td>' + cols(row) for row in result.invalid_rows]) + '</tr>'
         summary += '</table>'
         summary += '</body>'
         summary += '</html>'
