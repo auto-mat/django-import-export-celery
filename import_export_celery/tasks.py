@@ -53,13 +53,12 @@ def _run_import_job(import_job, dry_run=True):
     if dry_run:
         import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
-
     import_format = get_format(import_job)
     try:  # Copied from https://github.com/django-import-export/django-import-export/blob/3c082f98afe7996e79f936418fced3094f141c26/import_export/admin.py#L260 sorry
         data = import_job.file.read()
-        if not input_format.is_binary():
+        if not import_format.is_binary():
             data = force_text(data, 'utf8')
-        dataset = input_format.create_dataset(data)
+        dataset = import_format.create_dataset(data)
     except UnicodeDecodeError as e:
         import_job.errors += _("Imported file has a wrong encoding: %s" % e) + "\n"
         change_job_status(import_job, 'import', "Imported file has a wrong encoding", dry_run)
