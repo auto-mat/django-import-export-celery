@@ -38,6 +38,8 @@ class ImportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
     )
     exclude = ('job_status', )
 
+    list_filter = ('model', 'imported')
+
     actions = (
         admin_actions.run_import_job_action,
         admin_actions.run_import_job_action_dry,
@@ -78,6 +80,8 @@ class ExportJobAdmin(JobWithStatusMixin, admin.ModelAdmin):
         'processing_initiated',
     )
     exclude = ('job_status', )
+
+    list_filter = ('model',)
 
     def has_add_permission(self, request, obj=None):
         return False
