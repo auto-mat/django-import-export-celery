@@ -30,11 +30,12 @@ from import_export.formats.base_formats import DEFAULT_FORMATS
 
 from ..tasks import run_import_job
 
+
 @with_author
 class ImportJob(models.Model):
     file = models.FileField(
         verbose_name=_("File to be imported"),
-        upload_to='django-import-export-celery-import-jobs',
+        upload_to="django-import-export-celery-import-jobs",
         blank=False,
         null=False,
         max_length=255,
@@ -64,26 +65,23 @@ class ImportJob(models.Model):
 
     change_summary = models.FileField(
         verbose_name=_("Summary of changes made by this import"),
-        upload_to='django-import-export-celery-import-change-summaries',
+        upload_to="django-import-export-celery-import-change-summaries",
         blank=True,
         null=True,
     )
 
-    errors = models.TextField(
-        default='',
-        blank=True,
-    )
+    errors = models.TextField(default="", blank=True,)
 
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
         max_length=160,
-        choices=[(x,x) for x in getattr(settings, 'IMPORT_EXPORT_CELERY_MODELS', {}).keys()],
+        choices=[
+            (x, x) for x in getattr(settings, "IMPORT_EXPORT_CELERY_MODELS", {}).keys()
+        ],
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"),
-        max_length=160,
-        blank=True,
+        verbose_name=_("Status of the job"), max_length=160, blank=True,
     )
 
 

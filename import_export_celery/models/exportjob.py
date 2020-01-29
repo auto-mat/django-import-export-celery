@@ -30,7 +30,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
 
-from ..tasks import run_export_job, run_import_job
+from ..tasks import run_export_job
 
 
 @with_author
@@ -41,7 +41,7 @@ class ExportJob(models.Model):
 
     file = models.FileField(
         verbose_name=_("exported file"),
-        upload_to='django-import-export-celery-export-jobs',
+        upload_to="django-import-export-celery-export-jobs",
         blank=False,
         null=False,
         max_length=255,
@@ -55,9 +55,7 @@ class ExportJob(models.Model):
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"),
-        max_length=160,
-        blank=True,
+        verbose_name=_("Status of the job"), max_length=160, blank=True,
     )
 
     format = models.CharField(
@@ -71,24 +69,19 @@ class ExportJob(models.Model):
     )
 
     app_label = models.CharField(
-        verbose_name=_("App label of model to export from"),
-        max_length=160,
+        verbose_name=_("App label of model to export from"), max_length=160,
     )
 
     model = models.CharField(
-        verbose_name=_("Name of model to export from"),
-        max_length=160,
+        verbose_name=_("Name of model to export from"), max_length=160,
     )
 
     resource = models.CharField(
-        verbose_name=_("Resource to use when exporting"),
-        max_length=255,
-        default='',
+        verbose_name=_("Resource to use when exporting"), max_length=255, default="",
     )
 
     queryset = models.TextField(
-        verbose_name=_("JSON list of pks to export"),
-        null=False,
+        verbose_name=_("JSON list of pks to export"), null=False,
     )
 
     email_on_completion = models.BooleanField(
@@ -96,20 +89,20 @@ class ExportJob(models.Model):
         default=True,
     )
 
-    site_of_origin = models.TextField(
-        max_length=255,
-        default='',
-    )
+    site_of_origin = models.TextField(max_length=255, default="",)
 
     def get_resource_class(self):
         if self.resource:
-            return self.get_content_type().model_class().export_resource_classes()[self.resource][1]
+            return (
+                self.get_content_type()
+                .model_class()
+                .export_resource_classes()[self.resource][1]
+            )
 
     def get_content_type(self):
         if not self._content_type:
             self._content_type = ContentType.objects.get(
-                app_label=self.app_label,
-                model=self.model,
+                app_label=self.app_label, model=self.model,
             )
         return self._content_type
 
@@ -119,10 +112,12 @@ class ExportJob(models.Model):
 
     def get_resource_choices(self):
         return [
-            (k, v[0]) for k, v in
-            self.get_content_type().model_class().export_resource_classes().items()
+            (k, v[0])
+            for k, v in self.get_content_type()
+            .model_class()
+            .export_resource_classes()
+            .items()
         ]
-
 
 
 @receiver(post_save, sender=ExportJob)
