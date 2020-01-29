@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0001_initial'),
+        ("import_export_celery", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='importjob',
-            name='job_status',
-            field=models.CharField(blank=True, max_length=160, verbose_name='Status of the job'),
+            model_name="importjob",
+            name="job_status",
+            field=models.CharField(
+                blank=True, max_length=160, verbose_name="Status of the job"
+            ),
         ),
     ]

@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0003_exportjob'),
+        ("import_export_celery", "0003_exportjob"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='exportjob',
-            name='email_on_completion',
-            field=models.BooleanField(default=True, verbose_name='Send me an email when this export job is complete'),
+            model_name="exportjob",
+            name="email_on_completion",
+            field=models.BooleanField(
+                default=True,
+                verbose_name="Send me an email when this export job is complete",
+            ),
         ),
     ]

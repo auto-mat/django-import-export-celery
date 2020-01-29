@@ -17,7 +17,7 @@ services:
    - ./pipenv:/home/test
  celery:
   build: .
-  entrypoint: pipenv run celery worker -A project.celery
+  entrypoint: poetry run celery worker -A project.celery
   links:
    - postgres
    - redis

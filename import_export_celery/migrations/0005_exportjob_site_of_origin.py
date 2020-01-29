@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0004_exportjob_email_on_completion'),
+        ("import_export_celery", "0004_exportjob_email_on_completion"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='exportjob',
-            name='site_of_origin',
-            field=models.TextField(default='', max_length=255),
+            model_name="exportjob",
+            name="site_of_origin",
+            field=models.TextField(default="", max_length=255),
         ),
     ]

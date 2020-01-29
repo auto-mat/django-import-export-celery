@@ -6,18 +6,16 @@ from import_export.fields import Field
 
 
 class Winner(models.Model):
-    name = models.CharField(
-        max_length=80,
-        null=False,
-        blank=False,
-        default='',
-    )
+    name = models.CharField(max_length=80, null=False, blank=False, default="",)
 
     @classmethod
     def export_resource_classes(cls):
         return {
-            'winners': ('Winners resource', WinnersResource),
-            'winners_all_caps': ('Winners with all caps column resource', WinnersWithAllCapsResource),
+            "winners": ("Winners resource", WinnersResource),
+            "winners_all_caps": (
+                "Winners with all caps column resource",
+                WinnersWithAllCapsResource,
+            ),
         }
 
 

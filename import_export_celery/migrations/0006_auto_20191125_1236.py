@@ -6,28 +6,71 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0005_exportjob_site_of_origin'),
+        ("import_export_celery", "0005_exportjob_site_of_origin"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='exportjob',
-            name='job_status',
-            field=models.CharField(blank=True, max_length=160, verbose_name='Status of the job'),
+            model_name="exportjob",
+            name="job_status",
+            field=models.CharField(
+                blank=True, max_length=160, verbose_name="Status of the job"
+            ),
         ),
         migrations.AlterField(
-            model_name='exportjob',
-            name='format',
-            field=models.CharField(choices=[('text/csv', 'text/csv'), ('application/vnd.ms-excel', 'application/vnd.ms-excel'), ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'), ('text/tab-separated-values', 'text/tab-separated-values'), ('application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.spreadsheet'), ('application/json', 'application/json'), ('text/yaml', 'text/yaml'), ('text/html', 'text/html')], max_length=255, null=True, verbose_name='Format of file to be exported'),
+            model_name="exportjob",
+            name="format",
+            field=models.CharField(
+                choices=[
+                    ("text/csv", "text/csv"),
+                    ("application/vnd.ms-excel", "application/vnd.ms-excel"),
+                    (
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    ),
+                    ("text/tab-separated-values", "text/tab-separated-values"),
+                    (
+                        "application/vnd.oasis.opendocument.spreadsheet",
+                        "application/vnd.oasis.opendocument.spreadsheet",
+                    ),
+                    ("application/json", "application/json"),
+                    ("text/yaml", "text/yaml"),
+                    ("text/html", "text/html"),
+                ],
+                max_length=255,
+                null=True,
+                verbose_name="Format of file to be exported",
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='format',
-            field=models.CharField(choices=[('text/csv', 'text/csv'), ('application/vnd.ms-excel', 'application/vnd.ms-excel'), ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'), ('text/tab-separated-values', 'text/tab-separated-values'), ('application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.spreadsheet'), ('application/json', 'application/json'), ('text/yaml', 'text/yaml'), ('text/html', 'text/html')], max_length=255, verbose_name='Format of file to be imported'),
+            model_name="importjob",
+            name="format",
+            field=models.CharField(
+                choices=[
+                    ("text/csv", "text/csv"),
+                    ("application/vnd.ms-excel", "application/vnd.ms-excel"),
+                    (
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    ),
+                    ("text/tab-separated-values", "text/tab-separated-values"),
+                    (
+                        "application/vnd.oasis.opendocument.spreadsheet",
+                        "application/vnd.oasis.opendocument.spreadsheet",
+                    ),
+                    ("application/json", "application/json"),
+                    ("text/yaml", "text/yaml"),
+                    ("text/html", "text/html"),
+                ],
+                max_length=255,
+                verbose_name="Format of file to be imported",
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='model',
-            field=models.CharField(max_length=160, verbose_name='Name of model to import to'),
+            model_name="importjob",
+            name="model",
+            field=models.CharField(
+                max_length=160, verbose_name="Name of model to import to"
+            ),
         ),
     ]

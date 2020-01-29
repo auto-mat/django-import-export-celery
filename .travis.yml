@@ -1,0 +1,35 @@
+sudo: false
+language: python
+env:
+  global:
+    - DATABASE_NAME="travis_ci"
+    - DATABASE_USER="postgres"
+    - DATABASE_HOST=""
+    - DATABASE_PASSWORD=""
+    - DJANGO_SETTINGS_MODULE="project.settings"
+    - SECRET_KEY="sadfjasasdfasdfsadfsadfsadfeq"
+
+  matrix:
+    - DJANGO_VERSION="Django>=1.11,<1.12"
+    - DJANGO_VERSION="Django>=2.0,<2.1"
+    - DJANGO_VERSION="Django>=2.1,<2.2"
+    - DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
+python:
+  - "3.6"
+install:
+  - pip install poetry
+  - cd example
+  - poetry install
+  - poetry run pip install -q $DJANGO_VERSION
+before_script:
+  - poetry run black --check .
+  - poetry run black --check ../import_export_celery
+script:
+  - poetry run python3 manage.py test
+after_script:
+  - coveralls
+addons:
+  postgresql: "9.6"
+matrix:
+   allow_failures:
+      - env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
