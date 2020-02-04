@@ -15,7 +15,6 @@ def run_import_job_action(modeladmin, request, queryset):
         tasks.logger.info("Importing %s dry-run: False" % (instance.pk))
         tasks.run_import_job.delay(instance.pk, dry_run=False)
 
-
 run_import_job_action.short_description = _("Perform import")
 
 
@@ -34,21 +33,29 @@ def run_export_job_action(modeladmin, request, queryset):
         instance.save()
         tasks.run_export_job.delay(instance.pk)
 
-
 run_export_job_action.short_description = _("Run export job")
 
 
 def create_export_job_action(modeladmin, request, queryset):
-    if queryset:
+    selected = request.POST.getlist('_selected_action')
+    if selected:
+        queryset.query.select_related =False
         arbitrary_obj = queryset.first()
+        queryset = queryset.only("id")
+        selected = queryset.values_list('pk', flat=True)
         ej = ExportJob.objects.create(
             app_label=arbitrary_obj._meta.app_label,
             model=arbitrary_obj._meta.model_name,
-            queryset=json.dumps([obj.pk for obj in queryset]),
-            site_of_origin=request.scheme + "://" + request.get_host(),
+            queryset=json.dumps([str(pk) for pk in selected]),
+            site_of_origin=request.scheme + "://" + request.get_host()
         )
+    queryset.query.select_related = True
     rurl = reverse(
-        "admin:%s_%s_change" % (ej._meta.app_label, ej._meta.model_name,), args=[ej.pk],
+        'admin:%s_%s_change' % (
+            ej._meta.app_label,
+            ej._meta.model_name,
+        ),
+        args=[ej.pk],
     )
     return redirect(rurl)
 
