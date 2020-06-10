@@ -3,14 +3,28 @@ django-import-export-celery: process slow django imports and exports in celery
 
 django-import-export-celery helps you process long running imports and exports in celery.
 
+Basic installation
+------------------
+
+1. `Set up celery <http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html>`__ to work with your project.
+
+2. Add 'import_export_celery' to your INSTALLED_APPS settings variable
+
+3. Configure the location of your celery module setup
+
+    ::
+
+        IMPORT_EXPORT_CELERY_INIT_MODULE = "projectname.celery"
+
+
 Setting up imports with celery
 ------------------------------
 
 A fully configured example project can be found in the example directory of this repository.
 
-1. `Set up celery <http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html>`__ to work with your project.
+1. Perform the basic setup procedure described above.
 
-2. Add 'import_export_celery' to your INSTALLED_APPS settings variable and configure the IMPORT_EXPORT_CELERY_MODELS variable.
+2.  Configure the IMPORT_EXPORT_CELERY_MODELS variable.
 
     ::
 
@@ -20,14 +34,7 @@ A fully configured example project can be found in the example directory of this
 
     The available parameters are `app_label`, `model_name`, and `resource`. 'resource' should be a function which returns a django-import-export `Resource <https://django-import-export.readthedocs.io/en/latest/api_resources.html>`__.
 
-3. Configure the location of your celery module setup
-
-    ::
-
-        IMPORT_EXPORT_CELERY_INIT_MODULE = "projectname.celery"
-
-
-4. Done
+3. Done
 
 
 Preforming an import
@@ -105,14 +112,16 @@ As with imports, a fully configured example project can be found in the `example
 Performing exports with celery
 ------------------------------
 
-1. Open up the object list for your model in django admin, select the objects you wish to export, and select the `Export with celery` admin action.
+1. Perform the basic setup procedure described in the first section.
 
-2. Select the file format and resource you want to use to export the data.
+2. Open up the object list for your model in django admin, select the objects you wish to export, and select the `Export with celery` admin action.
 
-3. Save the model
+3. Select the file format and resource you want to use to export the data.
 
-4. You will receive an email when the export is done, click on the link in the email
+4. Save the model
 
-5. Click on the link near the bottom of the page titled `Exported file`.
+5. You will receive an email when the export is done, click on the link in the email
+
+6. Click on the link near the bottom of the page titled `Exported file`.
 
 
