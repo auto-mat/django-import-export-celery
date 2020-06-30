@@ -28,8 +28,17 @@ A fully configured example project can be found in the example directory of this
 
     ::
 
+        def resource():  # Optional
+            from myapp.models import WinnerResource
+            return WinnerResource
+
+
         IMPORT_EXPORT_CELERY_MODELS = {
-            "Winner": {'app_label': 'winners', 'model_name': 'Winner'}
+            "Winner": {
+                'app_label': 'winners',
+                'model_name': 'Winner',
+                'resource': resource,  # Optional
+            }
         }
 
     The available parameters are `app_label`, `model_name`, and `resource`. 'resource' should be a function which returns a django-import-export `Resource <https://django-import-export.readthedocs.io/en/latest/api_resources.html>`__.
