@@ -3,7 +3,7 @@
 from datetime import datetime
 import os
 
-from celery import task
+from celery import shared_task
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -175,7 +175,7 @@ def _run_import_job(import_job, dry_run=True):
     import_job.save()
 
 
-@task(bind=False)
+@shared_task(bind=False)
 def run_import_job(pk, dry_run=True):
     log.info("Importing %s dry-run %s" % (pk, dry_run))
     import_job = models.ImportJob.objects.get(pk=pk)
@@ -188,7 +188,7 @@ def run_import_job(pk, dry_run=True):
         return
 
 
-@task(bind=False)
+@shared_task(bind=False)
 def run_export_job(pk):
     log.info("Exporting %s" % pk)
     export_job = models.ExportJob.objects.get(pk=pk)
