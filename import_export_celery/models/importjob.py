@@ -67,7 +67,10 @@ class ImportJob(models.Model):
         null=True,
     )
 
-    errors = models.TextField(default="", blank=True,)
+    errors = models.TextField(
+        default="",
+        blank=True,
+    )
 
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
@@ -78,7 +81,9 @@ class ImportJob(models.Model):
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"), max_length=160, blank=True,
+        verbose_name=_("Status of the job"),
+        max_length=160,
+        blank=True,
     )
 
     @staticmethod
@@ -86,7 +91,8 @@ class ImportJob(models.Model):
         """ returns choices of available import formats """
         return [
             (f.CONTENT_TYPE, f().get_title())
-            for f in DEFAULT_FORMATS if f().can_import()
+            for f in DEFAULT_FORMATS
+            if f().can_import()
         ]
 
 

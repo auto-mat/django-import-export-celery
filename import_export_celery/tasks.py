@@ -237,7 +237,10 @@ def run_export_job(pk):
                 link=export_job.site_of_origin
                 + reverse(
                     "admin:%s_%s_change"
-                    % (export_job._meta.app_label, export_job._meta.model_name,),
+                    % (
+                        export_job._meta.app_label,
+                        export_job._meta.model_name,
+                    ),
                     args=[export_job.pk],
                 ),
             ),

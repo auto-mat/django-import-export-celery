@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0006_auto_20191125_1236'),
+        ("import_export_celery", "0006_auto_20191125_1236"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='exportjob',
-            name='format',
-            field=models.CharField(max_length=255, null=True, verbose_name='Format of file to be exported'),
+            model_name="exportjob",
+            name="format",
+            field=models.CharField(
+                max_length=255, null=True, verbose_name="Format of file to be exported"
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='format',
-            field=models.CharField(max_length=255, verbose_name='Format of file to be imported'),
+            model_name="importjob",
+            name="format",
+            field=models.CharField(
+                max_length=255, verbose_name="Format of file to be imported"
+            ),
         ),
     ]
