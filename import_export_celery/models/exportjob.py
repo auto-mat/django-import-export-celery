@@ -61,9 +61,6 @@ class ExportJob(models.Model):
     format = models.CharField(
         verbose_name=_("Format of file to be exported"),
         max_length=255,
-        choices=[(f.CONTENT_TYPE, f.CONTENT_TYPE) for f in DEFAULT_FORMATS],
-        # TODO only include formats that pass the tests in import_export get_export_formats
-        # https://github.com/django-import-export/django-import-export/blob/master/import_export/admin.py#L121
         blank=False,
         null=True,
     )
@@ -117,6 +114,15 @@ class ExportJob(models.Model):
             .model_class()
             .export_resource_classes()
             .items()
+        ]
+
+    @staticmethod
+    def get_format_choices():
+        """ returns choices of available export formats """
+        return [
+            (f.CONTENT_TYPE, f().get_title())
+            for f in DEFAULT_FORMATS
+            if f().can_export()
         ]
 
 

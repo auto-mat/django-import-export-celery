@@ -56,11 +56,7 @@ class ImportJob(models.Model):
     )
 
     format = models.CharField(
-        verbose_name=_("Format of file to be imported"),
-        max_length=255,
-        choices=[(f.CONTENT_TYPE, f.CONTENT_TYPE) for f in DEFAULT_FORMATS],
-        # TODO only include formats that pass the tests in import_export get_import_formats
-        # https://github.com/django-import-export/django-import-export/blob/master/import_export/admin.py#L121
+        verbose_name=_("Format of file to be imported"), max_length=255,
     )
 
     change_summary = models.FileField(
@@ -83,6 +79,15 @@ class ImportJob(models.Model):
     job_status = models.CharField(
         verbose_name=_("Status of the job"), max_length=160, blank=True,
     )
+
+    @staticmethod
+    def get_format_choices():
+        """ returns choices of available import formats """
+        return [
+            (f.CONTENT_TYPE, f().get_title())
+            for f in DEFAULT_FORMATS
+            if f().can_import()
+        ]
 
 
 @receiver(post_save, sender=ImportJob)
