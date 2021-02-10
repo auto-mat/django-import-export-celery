@@ -56,8 +56,7 @@ class ImportJob(models.Model):
     )
 
     format = models.CharField(
-        verbose_name=_("Format of file to be imported"),
-        max_length=255,
+        verbose_name=_("Format of file to be imported"), max_length=255,
     )
 
     change_summary = models.FileField(
@@ -67,10 +66,7 @@ class ImportJob(models.Model):
         null=True,
     )
 
-    errors = models.TextField(
-        default="",
-        blank=True,
-    )
+    errors = models.TextField(default="", blank=True,)
 
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
@@ -81,9 +77,7 @@ class ImportJob(models.Model):
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"),
-        max_length=160,
-        blank=True,
+        verbose_name=_("Status of the job"), max_length=160, blank=True,
     )
 
     @staticmethod

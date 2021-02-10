@@ -55,9 +55,7 @@ class ExportJob(models.Model):
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"),
-        max_length=160,
-        blank=True,
+        verbose_name=_("Status of the job"), max_length=160, blank=True,
     )
 
     format = models.CharField(
@@ -68,24 +66,19 @@ class ExportJob(models.Model):
     )
 
     app_label = models.CharField(
-        verbose_name=_("App label of model to export from"),
-        max_length=160,
+        verbose_name=_("App label of model to export from"), max_length=160,
     )
 
     model = models.CharField(
-        verbose_name=_("Name of model to export from"),
-        max_length=160,
+        verbose_name=_("Name of model to export from"), max_length=160,
     )
 
     resource = models.CharField(
-        verbose_name=_("Resource to use when exporting"),
-        max_length=255,
-        default="",
+        verbose_name=_("Resource to use when exporting"), max_length=255, default="",
     )
 
     queryset = models.TextField(
-        verbose_name=_("JSON list of pks to export"),
-        null=False,
+        verbose_name=_("JSON list of pks to export"), null=False,
     )
 
     email_on_completion = models.BooleanField(
@@ -93,10 +86,7 @@ class ExportJob(models.Model):
         default=True,
     )
 
-    site_of_origin = models.TextField(
-        max_length=255,
-        default="",
-    )
+    site_of_origin = models.TextField(max_length=255, default="",)
 
     def get_resource_class(self):
         if self.resource:
@@ -109,8 +99,7 @@ class ExportJob(models.Model):
     def get_content_type(self):
         if not self._content_type:
             self._content_type = ContentType.objects.get(
-                app_label=self.app_label,
-                model=self.model,
+                app_label=self.app_label, model=self.model,
             )
         return self._content_type
 
