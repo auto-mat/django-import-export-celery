@@ -201,7 +201,7 @@ def run_export_job(pk):
     qs_len = len(queryset)
 
     class Resource(resource_class):
-        def __init__(self, *args, **kwargs):
+        def __init__(self, export_job, *args, **kwargs):
             self.row_number = 1
             self.export_job = export_job
             super().__init__(*args, **kwargs)
