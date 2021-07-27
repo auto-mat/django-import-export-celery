@@ -20,7 +20,7 @@ from datetime import datetime
 from author.decorators import with_author
 
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 from django.dispatch import receiver
 
 from django.db.models.signals import post_save
@@ -95,4 +95,4 @@ def importjob_post_save(sender, instance, **kwargs):
     if not instance.processing_initiated:
         instance.processing_initiated = datetime.now()
         instance.save()
-        run_import_job.delay(instance.pk, dry_run=True)
+        transaction.on_commit(lambda: run_import_job.delay(instance.pk, dry_run=True))
