@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Author: Timothy Hobbs <timothy <at> hobbs.cz>
-from datetime import datetime
+from django.utils import timezone
 import os
 
 from celery import shared_task
@@ -174,7 +174,7 @@ def _run_import_job(import_job, dry_run=True):
             ContentFile(summary.encode("utf-8")),
         )
     else:
-        import_job.imported = datetime.now()
+        import_job.imported = timezone.now()
     change_job_status(import_job, "import", "5/5 Import job finished", dry_run)
     import_job.save()
 
@@ -225,7 +225,7 @@ def run_export_job(pk):
     filename = "{app}-{model}-{date}.{extension}".format(
         app=export_job.app_label,
         model=export_job.model,
-        date=str(datetime.now()),
+        date=str(timezone.now()),
         extension=format.get_extension(),
     )
     if not format.is_binary():
