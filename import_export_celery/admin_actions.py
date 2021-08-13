@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 import json
 from uuid import UUID
 
@@ -31,7 +31,7 @@ run_import_job_action_dry.short_description = _("Perform dry import")
 
 def run_export_job_action(modeladmin, request, queryset):
     for instance in queryset:
-        instance.processing_initiated = datetime.now()
+        instance.processing_initiated = timezone.now()
         instance.save()
         tasks.run_export_job.delay(instance.pk)
 

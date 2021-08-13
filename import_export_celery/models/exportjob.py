@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-from datetime import datetime
+from django.utils import timezone
 import json
 
 from author.decorators import with_author
@@ -129,6 +129,6 @@ class ExportJob(models.Model):
 @receiver(post_save, sender=ExportJob)
 def exportjob_post_save(sender, instance, **kwargs):
     if instance.resource and not instance.processing_initiated:
-        instance.processing_initiated = datetime.now()
+        instance.processing_initiated = timezone.now()
         instance.save()
         run_export_job.delay(instance.pk)
