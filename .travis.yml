@@ -10,7 +10,7 @@ env:
     - SECRET_KEY="sadfjasasdfasdfsadfsadfsadfeq"
 
   matrix:
-    - DJANGO_VERSION="Django==3.0"
+    - DJANGO_VERSION="Django==3.1"
 python:
   - "3.7"
 install:
