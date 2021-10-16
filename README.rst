@@ -8,13 +8,11 @@ Basic installation
 
 1. `Set up celery <http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html>`__ to work with your project.
 
-2. Add ``'author'`` to your ``INSTALLED_APPS`` settings variable
+2. Add ``'import_export_celery'`` to your ``INSTALLED_APPS`` settings variable
 
-3. Add ``'import_export_celery'`` to your ``INSTALLED_APPS`` settings variable
+3. Add ``'author.middlewares.AuthorDefaultBackendMiddleware'`` to your ``MIDDLEWARE_CLASSES``
 
-4. Add ``'author.middlewares.AuthorDefaultBackendMiddleware'`` to your ``MIDDLEWARE_CLASSES``
-
-5. Configure the location of your celery module setup
+4. Configure the location of your celery module setup
 
     ::
 
