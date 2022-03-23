@@ -23,6 +23,7 @@ from author.decorators import with_author
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db import transaction
 from django.dispatch import receiver
 
 from django.db.models.signals import post_save
@@ -131,4 +132,4 @@ def exportjob_post_save(sender, instance, **kwargs):
     if instance.resource and not instance.processing_initiated:
         instance.processing_initiated = timezone.now()
         instance.save()
-        run_export_job.delay(instance.pk)
+        transaction.on_commit(lambda:  run_export_job.delay(instance.pk))
