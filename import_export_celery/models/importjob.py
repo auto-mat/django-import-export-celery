@@ -71,9 +71,7 @@ class ImportJob(models.Model):
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
         max_length=160,
-        choices=[
-            (x, x) for x in getattr(settings, "IMPORT_EXPORT_CELERY_MODELS", {}).keys()
-        ],
+        choices=[],
     )
 
     job_status = models.CharField(
