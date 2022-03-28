@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2019 o.s. Auto*Mat
 from django import forms
 from django.conf import settings

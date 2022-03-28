@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Author: Timothy Hobbs <timothy <at> hobbs.cz>
 from django.utils import timezone
 import os
@@ -84,17 +83,17 @@ def _run_import_job(import_job, dry_run=True):
                     change_job_status(
                         import_job,
                         "import",
-                        "3/5 Importing row %s/%s" % (row_number, len(dataset)),
+                        f"3/5 Importing row {row_number}/{len(dataset)}",
                         dry_run,
                     )
-            return super(Resource, self).before_import_row(row, **kwargs)
+            return super().before_import_row(row, **kwargs)
 
     resource = Resource(import_job=import_job)
 
     result = resource.import_data(dataset, dry_run=dry_run)
     change_job_status(import_job, "import", "4/5 Generating import summary", dry_run)
     for error in result.base_errors:
-        import_job.errors += "\n%s\n%s\n" % (error.error, error.traceback)
+        import_job.errors += f"\n{error.error}\n{error.traceback}\n"
     for line, errors in result.row_errors():
         for error in errors:
             import_job.errors += _("Line: %s - %s\n\t%s\n%s") % (
@@ -181,7 +180,7 @@ def _run_import_job(import_job, dry_run=True):
 
 @shared_task(bind=False)
 def run_import_job(pk, dry_run=True):
-    log.info("Importing %s dry-run %s" % (pk, dry_run))
+    log.info(f"Importing {pk} dry-run {dry_run}")
     import_job = models.ImportJob.objects.get(pk=pk)
     try:
         _run_import_job(import_job, dry_run)
@@ -211,10 +210,10 @@ def run_export_job(pk):
                 change_job_status(
                     export_job,
                     "export",
-                    "Exporting row %s/%s" % (self.row_number, qs_len),
+                    f"Exporting row {self.row_number}/{qs_len}",
                 )
             self.row_number += 1
-            return super(Resource, self).export_resource(*args, **kwargs)
+            return super().export_resource(*args, **kwargs)
 
     resource = Resource(export_job=export_job)
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2016 o.s. Auto*Mat
 from django.contrib import admin
 
