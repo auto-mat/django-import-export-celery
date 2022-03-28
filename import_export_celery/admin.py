@@ -4,6 +4,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.core.cache import cache
+from django.utils.translation import gettext_lazy as _
 
 from . import admin_actions, models
 
@@ -18,6 +19,11 @@ class JobWithStatusMixin:
 
 
 class ImportJobForm(forms.ModelForm):
+
+    model = forms.ChoiceField(
+        label=_("Name of model to import to")
+    )
+
     class Meta:
         model = models.ImportJob
         fields = "__all__"
