@@ -72,7 +72,6 @@ class ImportJob(models.Model):
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
         max_length=160,
-        choices=[],
     )
 
     job_status = models.CharField(
