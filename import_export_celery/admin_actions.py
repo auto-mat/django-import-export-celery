@@ -54,7 +54,12 @@ def create_export_job_action(modeladmin, request, queryset):
             site_of_origin=request.scheme + "://" + request.get_host(),
         )
     rurl = reverse(
-        "admin:%s_%s_change" % (ej._meta.app_label, ej._meta.model_name,), args=[ej.pk],
+        "admin:%s_%s_change"
+        % (
+            ej._meta.app_label,
+            ej._meta.model_name,
+        ),
+        args=[ej.pk],
     )
     return redirect(rurl)
 

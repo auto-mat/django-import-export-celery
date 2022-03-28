@@ -20,9 +20,7 @@ class JobWithStatusMixin:
 
 class ImportJobForm(forms.ModelForm):
 
-    model = forms.ChoiceField(
-        label=_("Name of model to import to")
-    )
+    model = forms.ChoiceField(label=_("Name of model to import to"))
 
     class Meta:
         model = models.ImportJob
@@ -30,7 +28,7 @@ class ImportJobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['model'].choices = [
+        self.fields["model"].choices = [
             (x, x) for x in getattr(settings, "IMPORT_EXPORT_CELERY_MODELS", {}).keys()
         ]
         self.fields["format"].widget = forms.Select(
