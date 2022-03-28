@@ -61,7 +61,7 @@ You will find an example django application that uses django-import-export-celer
 
    .. image:: screenshots/import_jobs.png
 
-3. Create a new import job. There is an example import CSV file in the example/example-data directory. Select that file. Select csv as the file format. We'll be importing to the Winner's model table. 
+3. Create a new import job. There is an example import CSV file in the example/example-data directory. Select that file. Select csv as the file format. We'll be importing to the Winner's model table.
 
    .. image:: screenshots/new_import_job.png
 
@@ -134,5 +134,3 @@ Performing exports with celery
 5. You will receive an email when the export is done, click on the link in the email
 
 6. Click on the link near the bottom of the page titled `Exported file`.
-
-

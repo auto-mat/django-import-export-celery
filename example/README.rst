@@ -69,6 +69,6 @@ Actually run the server
 
     python manage.py runserver 0.0.0.0:8000
 
-The example app will be available from http://127.0.0.1:8001/admin 
+The example app will be available from http://127.0.0.1:8001/admin
 
 Note: parts of this example app were taken from the [djano-leaflet](https://github.com/makinacorpus/django-leaflet/tree/master/example) example app.
