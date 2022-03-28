@@ -1,13 +1,15 @@
 dist: focal
 sudo: false
 language: python
+services:
+  - postgresql
 env:
   global:
     - DATABASE_NAME="travis_ci"
-    - DATABASE_USER="postgres"
+    - DATABASE_USER="travis"
+    - DATABASE_PORT=5433
     - DATABASE_HOST=""
     - DATABASE_PASSWORD=""
-    - DATABASE_PORT=5433
     - DJANGO_SETTINGS_MODULE="project.settings"
     - SECRET_KEY="sadfjasasdfasdfsadfsadfsadfeq"
 
@@ -31,7 +33,7 @@ script:
 after_script:
   - coveralls
 addons:
-  postgresql: "9.6"
+  postgresql: "12.2"  # default focal version
 matrix:
    allow_failures:
       - env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
