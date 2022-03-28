@@ -10,9 +10,12 @@ env:
     - SECRET_KEY="sadfjasasdfasdfsadfsadfsadfeq"
 
   matrix:
-    - DJANGO_VERSION="Django==3.1"
+    - DJANGO_VERSION="Django==3.2"
 python:
   - "3.7"
+  - "3.8"
+  - "3.9"
+  - "3.10"
 install:
   - pip install poetry
   - cd example
