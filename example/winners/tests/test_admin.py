@@ -7,7 +7,7 @@ class AdminSmokeTest(tests.AdminSiteSmokeTest):
     exclude_apps = []
     fixtures = []
 
-    def post_request(self, post_data=dict, params=None):
+    def post_request(self, post_data={}, params=None):  # noqa
         request = self.factory.post("/", data=post_data)
         request.user = self.superuser
         request._dont_enforce_csrf_checks = True
