@@ -52,7 +52,8 @@ def _run_import_job(import_job, dry_run=True):
         import_job.errors = ""
     model_config = ModelConfig(**importables[import_job.model])
     import_format = get_format(import_job)
-    try:  # Copied from https://github.com/django-import-export/django-import-export/blob/3c082f98afe7996e79f936418fced3094f141c26/import_export/admin.py#L260 sorry
+    # Copied from https://github.com/django-import-export/django-import-export/blob/3c082f98afe7996e79f936418fced3094f141c26/import_export/admin.py#L260 sorry  # noqa
+    try:
         data = import_job.file.read()
         if not import_format.is_binary():
             data = force_text(data, "utf8")

@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 from import_export.resources import ModelResource
 from import_export.fields import Field

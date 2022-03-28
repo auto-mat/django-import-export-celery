@@ -1,10 +1,9 @@
+import codecs
 import os
 from setuptools import setup, find_packages
-import sys
 import subprocess
 
 here = os.path.abspath(os.path.dirname(__file__))
-import codecs
 
 requires = ["Django", "django-import-export", "django-author"]
 
@@ -21,6 +20,7 @@ setup(
     download_url="http://pypi.python.org/pypi/django-import-export-celery/",
     description="Process long running django imports and exports in celery",
     long_description=codecs.open(os.path.join(here, "README.rst"), "r", "utf-8").read(),
+    long_description_content_type="text/x-rst",
     license="License :: OSI Approved :: GNU Lesser General Public License v3.0 or later (LGPLv3.0+)",
     install_requires=requires,
     packages=find_packages(),
