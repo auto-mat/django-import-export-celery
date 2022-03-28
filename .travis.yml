@@ -1,13 +1,10 @@
-dist: focal
 sudo: false
 language: python
-services:
-  - postgresql
 env:
   global:
     - DATABASE_NAME="travis_ci"
-    - DATABASE_USER="travis"
-    - DATABASE_PORT=5433
+    - DATABASE_USER="postgres"
+    - DATABASE_PORT=5432
     - DATABASE_HOST=""
     - DATABASE_PASSWORD=""
     - DJANGO_SETTINGS_MODULE="project.settings"
@@ -19,7 +16,7 @@ python:
   - "3.7"
   - "3.8"
   - "3.9"
-  - "3.10"
+#  - "3.10"
 install:
   - pip install poetry
   - cd example
@@ -33,7 +30,7 @@ script:
 after_script:
   - coveralls
 addons:
-  postgresql: "12.2"  # default focal version
+  postgresql: "9.6"
 matrix:
    allow_failures:
       - env: DJANGO_VERSION='https://github.com/django/django/archive/master.tar.gz'
