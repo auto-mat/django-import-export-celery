@@ -7,6 +7,7 @@ env:
     - DATABASE_USER="postgres"
     - DATABASE_HOST=""
     - DATABASE_PASSWORD=""
+    - DATABASE_PORT=5433
     - DJANGO_SETTINGS_MODULE="project.settings"
     - SECRET_KEY="sadfjasasdfasdfsadfsadfsadfeq"
 
