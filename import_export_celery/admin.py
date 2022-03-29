@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2019 o.s. Auto*Mat
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.core.cache import cache
+from django.utils.translation import gettext_lazy as _
 
 from . import admin_actions, models
 
@@ -17,12 +18,18 @@ class JobWithStatusMixin:
 
 
 class ImportJobForm(forms.ModelForm):
+
+    model = forms.ChoiceField(label=_("Name of model to import to"))
+
     class Meta:
         model = models.ImportJob
         fields = "__all__"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["model"].choices = [
+            (x, x) for x in getattr(settings, "IMPORT_EXPORT_CELERY_MODELS", {}).keys()
+        ]
         self.fields["format"].widget = forms.Select(
             choices=self.instance.get_format_choices()
         )

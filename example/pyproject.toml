@@ -17,7 +17,7 @@ psycopg2-binary = "^2.8.4"
 [tool.poetry.dev-dependencies]
 django-admin-smoke-tests = "^0.3.0"
 pudb = "^2019.2"
-black = "^19.10b0"
+black = "^22.3.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

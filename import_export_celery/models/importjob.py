@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2019 o.s. Auto*Mat
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,12 +17,11 @@ from django.utils import timezone
 
 from author.decorators import with_author
 
-from django.conf import settings
 from django.db import models, transaction
 from django.dispatch import receiver
 
 from django.db.models.signals import post_save
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
 
@@ -56,7 +53,8 @@ class ImportJob(models.Model):
     )
 
     format = models.CharField(
-        verbose_name=_("Format of file to be imported"), max_length=255,
+        verbose_name=_("Format of file to be imported"),
+        max_length=255,
     )
 
     change_summary = models.FileField(
@@ -66,23 +64,25 @@ class ImportJob(models.Model):
         null=True,
     )
 
-    errors = models.TextField(default="", blank=True,)
+    errors = models.TextField(
+        default="",
+        blank=True,
+    )
 
     model = models.CharField(
         verbose_name=_("Name of model to import to"),
         max_length=160,
-        choices=[
-            (x, x) for x in getattr(settings, "IMPORT_EXPORT_CELERY_MODELS", {}).keys()
-        ],
     )
 
     job_status = models.CharField(
-        verbose_name=_("Status of the job"), max_length=160, blank=True,
+        verbose_name=_("Status of the job"),
+        max_length=160,
+        blank=True,
     )
 
     @staticmethod
     def get_format_choices():
-        """ returns choices of available import formats """
+        """returns choices of available import formats"""
         return [
             (f.CONTENT_TYPE, f().get_title())
             for f in DEFAULT_FORMATS
