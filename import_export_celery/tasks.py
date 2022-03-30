@@ -91,6 +91,8 @@ def _run_import_job(import_job, dry_run=True):
 
     resource = Resource(import_job=import_job)
 
+    skip_diff = resource._meta.skip_diff or resource._meta.skip_html_diff
+
     result = resource.import_data(dataset, dry_run=dry_run)
     change_job_status(import_job, "import", "4/5 Generating import summary", dry_run)
     for error in result.base_errors:
@@ -112,7 +114,7 @@ def _run_import_job(import_job, dry_run=True):
         summary += "<body>"
         summary += '<table  border="1">'  # TODO refactor the existing template so we can use it for this
         # https://github.com/django-import-export/django-import-export/blob/6575c3e1d89725701e918696fbc531aeb192a6f7/import_export/templates/admin/import_export/import.html
-        if not result.invalid_rows:
+        if not result.invalid_rows and not skip_diff:
             cols = lambda row: "</td><td>".join([field for field in row.diff])
             summary += (
                 "<tr><td>change_type</td><td>"
