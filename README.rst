@@ -134,3 +134,8 @@ Performing exports with celery
 5. You will receive an email when the export is done, click on the link in the email
 
 6. Click on the link near the bottom of the page titled `Exported file`.
+
+Credits
+-------
+
+`django-import-export-celery` was developed by the Czech non-profit `auto*mat z.s. <https://auto-mat.cz>`_.
