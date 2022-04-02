@@ -9,7 +9,7 @@ requires = ["Django", "django-import-export", "django-author"]
 
 version = subprocess.check_output(
     ["git", "describe", "--abbrev=0", "--tags", "--always"]
-).decode("utf-8")
+).decode("utf-8").strip()
 
 setup(
     name="django-import-export-celery",
