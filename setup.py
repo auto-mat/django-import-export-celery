@@ -9,8 +9,11 @@ here = os.path.abspath(os.path.dirname(__file__))
 requires = ["Django", "django-import-export", "django-author"]
 
 version = subprocess.check_output(
-    ["git", "describe", "--abbrev=0", "--tags", "--always"]
-).decode("utf-8").strip() + ".dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    ["git", "describe", "--abbrev=0", "--tags"]
+).decode("utf-8").strip()
+
+if not version:
+    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 setup(
     name="django-import-export-celery",
