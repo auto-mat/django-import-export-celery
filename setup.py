@@ -7,9 +7,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 requires = ["Django", "django-import-export", "django-author"]
 
-version = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode(
-    "utf-8"
-)
+version = subprocess.check_output(
+    ["git", "describe", "--abbrev=0", "--tags", "--always"]
+).decode("utf-8")
 
 setup(
     name="django-import-export-celery",
