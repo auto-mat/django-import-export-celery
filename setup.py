@@ -2,6 +2,7 @@ import codecs
 import os
 from setuptools import setup, find_packages
 import subprocess
+import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -9,7 +10,7 @@ requires = ["Django", "django-import-export", "django-author"]
 
 version = subprocess.check_output(
     ["git", "describe", "--abbrev=0", "--tags", "--always"]
-).decode("utf-8").strip()
+).decode("utf-8").strip() + ".dev" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 setup(
     name="django-import-export-celery",
