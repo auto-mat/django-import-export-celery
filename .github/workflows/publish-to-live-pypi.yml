@@ -9,6 +9,7 @@ jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to pypi
     runs-on: ubuntu-latest
+    environment: pypi
     steps:
     - uses: actions/checkout@master
     - name: Set up Python 3.9
