@@ -1,3 +1,6 @@
+.. image:: https://img.shields.io/pypi/v/django-import-export-celery.svg
+   :target: https://pypi.org/manage/project/django-import-export-celery/releases/
+
 django-import-export-celery: process slow django imports and exports in celery
 ==============================================================================
 
