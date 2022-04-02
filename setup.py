@@ -8,11 +8,11 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 requires = ["Django", "django-import-export", "django-author"]
 
-version = subprocess.check_output(
-    ["git", "describe", "--abbrev=0", "--tags"]
-).decode("utf-8").strip()
-
-if not version:
+try:
+    version = subprocess.check_output(
+        ["git", "describe", "--abbrev=0", "--tags"]
+    ).decode("utf-8").strip()
+except subprocess.CalledProcessError:
     version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 setup(
