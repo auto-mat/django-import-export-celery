@@ -27,6 +27,10 @@ class WinnersResource(ModelResource):
     class Meta:
         model = Winner
 
+    def get_export_queryset(self):
+        """To customise the queryset of the model resource with annotation override"""
+        return self.Meta.model.objects.all()
+
 
 class WinnersWithAllCapsResource(WinnersResource):
     name_all_caps = Field()

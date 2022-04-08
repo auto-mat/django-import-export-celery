@@ -100,6 +100,12 @@ class ExportJob(models.Model):
 
     def get_queryset(self):
         pks = json.loads(self.queryset)
+        # If customised queryset for the model exists
+        # then it'll apply filter on that otherwise it'll
+        # apply filter directly on the model.
+        resource_class = self.get_resource_class()
+        if hasattr(resource_class, "get_export_queryset"):
+            return resource_class().get_export_queryset().filter(pk__in=pks)
         return self.get_content_type().model_class().objects.filter(pk__in=pks)
 
     def get_resource_choices(self):
