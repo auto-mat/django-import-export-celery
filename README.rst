@@ -121,7 +121,18 @@ As with imports, a fully configured example project can be found in the `example
                 create_export_job_action,
             )
 
-3. Done!
+3. To customise export queryset you need to add `get_export_queryset` to the `ModelResource`.
+    ::
+
+        class WinnersResource(ModelResource):
+            class Meta:
+                model = Winner
+
+            def get_export_queryset(self):
+                """To customise the queryset of the model resource with annotation override"""
+                return self.Meta.model.objects.annotate(device_type=Subquery(FCMDevice.objects.filter(
+                        user=OuterRef("pk")).values("type")[:1])
+4. Done!
 
 Performing exports with celery
 ------------------------------
