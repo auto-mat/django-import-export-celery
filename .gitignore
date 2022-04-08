@@ -10,3 +10,4 @@ example/django-import-export-celery-export-jobs/
 pipenv/
 django_import_export_celery.egg-info/
 db/
+.idea/
