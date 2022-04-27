@@ -10,7 +10,7 @@ from django.db import transaction
 from django.dispatch import receiver
 
 from django.db.models.signals import post_save
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
 

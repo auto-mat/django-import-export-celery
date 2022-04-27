@@ -2,7 +2,7 @@ from django.utils import timezone
 import json
 from uuid import UUID
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.shortcuts import redirect
 
