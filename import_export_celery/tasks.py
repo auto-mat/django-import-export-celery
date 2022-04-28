@@ -10,7 +10,7 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 
 from django.urls import reverse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
@@ -56,7 +56,7 @@ def _run_import_job(import_job, dry_run=True):
     try:
         data = import_job.file.read()
         if not import_format.is_binary():
-            data = force_text(data, "utf8")
+            data = force_str(data, "utf8")
         dataset = import_format.create_dataset(data)
     except UnicodeDecodeError as e:
         import_job.errors += _("Imported file has a wrong encoding: %s" % e) + "\n"
