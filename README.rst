@@ -149,6 +149,15 @@ Performing exports with celery
 
 6. Click on the link near the bottom of the page titled `Exported file`.
 
+For developers of this library
+------------------------------
+
+You can enter a preconfigured dev environment by first running `make` and then launching `./develop.sh` to get into a docker compose environment packed with **redis**, **celery**, **postgres** and everything you need to run and test django-import-export-celery.
+
+Before submitting a PR please run `flake8` and (in the examples directory) `python3 manange.py test`.
+
+Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker-compose down celery`, `docker-compose up celery`.
+
 Credits
 -------
 

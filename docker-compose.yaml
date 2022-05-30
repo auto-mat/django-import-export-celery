@@ -14,10 +14,10 @@ services:
   user: test
   volumes:
    - ./:/proj/
-   - ./pipenv:/home/test
+   - ./pyenv:/home/test
  celery:
   build: .
-  entrypoint: poetry run celery worker -A project.celery
+  entrypoint: poetry run celery -A project.celery worker
   links:
    - postgres
    - redis
@@ -27,7 +27,7 @@ services:
   user: test
   volumes:
    - ./:/proj/
-   - ./pipenv:/home/test
+   - ./pyenv:/home/test
  redis:
   image: redis
  postgres:
