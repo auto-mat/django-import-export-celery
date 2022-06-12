@@ -158,6 +158,11 @@ Before submitting a PR please run `flake8` and (in the examples directory) `pyth
 
 Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker-compose down celery`, `docker-compose up celery`.
 
+Comercial support
+-----------------
+
+Comercial support is provided by [gradesta s.r.o](https://gradesta.com/support/).
+
 Credits
 -------
 
