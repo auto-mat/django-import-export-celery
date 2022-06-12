@@ -161,7 +161,7 @@ Please note, that you need to restart celery for changes to propogate to the wor
 Comercial support
 -----------------
 
-Comercial support is provided by [gradesta s.r.o](https://gradesta.com/support/).
+Comercial support is provided by `gradesta s.r.o <https://gradesta.com/support/>`_.
 
 Credits
 -------
