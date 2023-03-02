@@ -51,6 +51,13 @@ A fully configured example project can be found in the example directory of this
 3. Done
 
 
+By default a dry run of the import is initiated when the import object is created. To instead import the file immediately without a dry-run set the `IMPORT_DRY_RUN_FIRST_TIME` to `False`
+
+    ::
+
+        IMPORT_DRY_RUN_FIRST_TIME = False
+
+
 Preforming an import
 --------------------
 
