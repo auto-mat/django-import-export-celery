@@ -49,6 +49,11 @@ A fully configured example project can be found in the example directory of this
     The available parameters are `app_label`, `model_name`, and `resource`. 'resource' should be a function which returns a django-import-export `Resource <https://django-import-export.readthedocs.io/en/latest/api_resources.html>`__.
 
 3. Done
+4. Configure to turn off default dry run import. By default dry run import is `True`
+
+    ::
+
+        IMPORT_DRY_RUN_FIRST_TIME = False
 
 
 Preforming an import
