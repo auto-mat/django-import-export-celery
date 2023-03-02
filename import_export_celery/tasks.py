@@ -182,7 +182,7 @@ def _run_import_job(import_job, dry_run=True):
 
 
 @shared_task(bind=False)
-def run_import_job(pk, dry_run=True):
+def run_import_job(pk, dry_run=False):
     log.info(f"Importing {pk} dry-run {dry_run}")
     import_job = models.ImportJob.objects.get(pk=pk)
     try:
