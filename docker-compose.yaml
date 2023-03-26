@@ -17,7 +17,7 @@ services:
    - ./pyenv:/home/test
  celery:
   build: .
-  entrypoint: poetry run celery -A project.celery worker
+  entrypoint: poetry run celery -A project.celery worker -l info
   links:
    - postgres
    - redis
