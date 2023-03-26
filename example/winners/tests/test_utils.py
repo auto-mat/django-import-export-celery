@@ -1,6 +1,5 @@
 from django.test import TestCase, override_settings
 
-from django.urls import reverse
 from import_export_celery.utils import (
     get_export_job_mail_subject,
     get_export_job_mail_template,
