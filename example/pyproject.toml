@@ -13,6 +13,7 @@ celery = "*"
 django-author = "*"
 redis = "*"
 psycopg2-binary = "^2.8.4"
+html2text = "^2020.1.16"
 
 [tool.poetry.dev-dependencies]
 django-admin-smoke-tests = "^0.3.0"

@@ -6,7 +6,7 @@ import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-requires = ["Django", "django-import-export", "django-author"]
+requires = ["Django", "django-import-export", "django-author", "html2text"]
 
 try:
     version = subprocess.check_output(
