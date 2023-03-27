@@ -141,6 +141,7 @@ As with imports, a fully configured example project can be found in the `example
                         user=OuterRef("pk")).values("type")[:1])
 4. Done!
 
+
 Performing exports with celery
 ------------------------------
 
@@ -155,6 +156,44 @@ Performing exports with celery
 5. You will receive an email when the export is done, click on the link in the email
 
 6. Click on the link near the bottom of the page titled `Exported file`.
+
+
+
+Customizing email template for export job completion email
+---------------------------------------------------------
+
+By default this is the subject and template used to send the email
+
+
+    ::
+
+        Subject: 'Django: Export job completed'
+        Email template: 'email/export_job_completion.html'
+
+
+The default email template can be found `here <https://github.com/auto-mat/django-import-export-celery/blob/master/import_export_celery/templates/email/export_job_completion.html>`__
+
+The default email subject and template can be customized by overriding these values from django settings:-
+
+
+    ::
+
+        EXPORT_JOB_COMPLETION_MAIL_SUBJECT="Your custom subject"
+        EXPORT_JOB_COMPLETION_MAIL_TEMPLATE="path_to_folder/your_custom_template.html"
+
+
+The email template will get some context variables that you can use to customize your template.
+
+
+    ::
+        
+        {
+            export_job: The current instance of ExportJob model
+            app_label: export_job.app_label
+            model: export_job.model
+            link: A link to go to the export_job instance on django admin
+        }
+
 
 For developers of this library
 ------------------------------
