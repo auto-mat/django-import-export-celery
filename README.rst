@@ -160,7 +160,7 @@ Performing exports with celery
 
 
 Customizing email template for export job completion email
----------------------------------------------------------
+----------------------------------------------------------
 
 By default this is the subject and template used to send the email
 
