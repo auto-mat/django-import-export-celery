@@ -53,6 +53,7 @@ class ImportJob(models.Model):
     )
 
     errors = models.TextField(
+        verbose_name=_("Errors"),
         default="",
         blank=True,
     )
@@ -67,6 +68,10 @@ class ImportJob(models.Model):
         max_length=160,
         blank=True,
     )
+
+    class Meta:
+        verbose_name = _("Import job")
+        verbose_name_plural = _("Import jobs")
 
     @staticmethod
     def get_format_choices():
@@ -83,4 +88,9 @@ def importjob_post_save(sender, instance, **kwargs):
     if not instance.processing_initiated:
         instance.processing_initiated = timezone.now()
         instance.save()
-        transaction.on_commit(lambda: run_import_job.delay(instance.pk, dry_run=getattr(settings, "IMPORT_DRY_RUN_FIRST_TIME", True)))
+        transaction.on_commit(
+            lambda: run_import_job.delay(
+                instance.pk,
+                dry_run=getattr(settings, "IMPORT_DRY_RUN_FIRST_TIME", True),
+            )
+        )

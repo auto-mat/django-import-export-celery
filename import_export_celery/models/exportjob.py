@@ -78,9 +78,14 @@ class ExportJob(models.Model):
     )
 
     site_of_origin = models.TextField(
+        verbose_name=_("Site of origin"),
         max_length=255,
         default="",
     )
+
+    class Meta:
+        verbose_name = _("Export job")
+        verbose_name_plural = _("Export jobs")
 
     def get_resource_class(self):
         if self.resource:
