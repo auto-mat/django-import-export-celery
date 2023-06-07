@@ -17,11 +17,11 @@ EXCLUDED_EXPORT_FORMATS = getattr(
 
 
 def get_formats():
-    formats = []
-    for format in DEFAULT_FORMATS:
-        if format.CONTENT_TYPE not in EXCLUDED_EXPORT_FORMATS:
-            formats.append(format)
-    return formats
+    return [
+        format
+        for format in DEFAULT_FORMATS
+        if format.CONTENT_TYPE not in EXCLUDED_EXPORT_FORMATS
+    ]
 
 
 def build_html_and_text_message(template_name, context={}):
