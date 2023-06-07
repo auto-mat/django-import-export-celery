@@ -12,9 +12,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
 
-from import_export.formats.base_formats import DEFAULT_FORMATS
-
 from ..tasks import run_export_job
+from ..utils import get_formats
 
 
 @with_author
@@ -127,7 +126,7 @@ class ExportJob(models.Model):
         """returns choices of available export formats"""
         return [
             (f.CONTENT_TYPE, f().get_title())
-            for f in DEFAULT_FORMATS
+            for f in get_formats()
             if f().can_export()
         ]
 
