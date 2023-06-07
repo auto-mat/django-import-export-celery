@@ -20,7 +20,8 @@ def get_formats():
     return [
         format
         for format in DEFAULT_FORMATS
-        if format.CONTENT_TYPE not in EXCLUDED_EXPORT_FORMATS
+        if format.TABLIB_MODULE.split(".")[-1].strip("_")
+        not in EXCLUDED_EXPORT_FORMATS
     ]
 
 
