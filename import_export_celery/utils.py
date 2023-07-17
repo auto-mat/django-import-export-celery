@@ -9,9 +9,9 @@ DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT = "Django: Export job completed"
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE = (
     "email/export_job_completion.html"
 )
-EXCLUDED_EXPORT_FORMATS = getattr(
+IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = getattr(
     settings,
-    "EXCLUDED_EXPORT_FORMATS",
+    "IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS",
     [],
 )
 
@@ -21,7 +21,7 @@ def get_formats():
         format
         for format in DEFAULT_FORMATS
         if format.TABLIB_MODULE.split(".")[-1].strip("_")
-        not in EXCLUDED_EXPORT_FORMATS
+        not in IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS
     ]
 
 
