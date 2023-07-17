@@ -158,6 +158,17 @@ Performing exports with celery
 6. Click on the link near the bottom of the page titled `Exported file`.
 
 
+Excluding export file formats in the admin site
+-----------------------------------------------
+
+All available file formats to export are taken from the `Tablib project <https://pypi.org/project/tablib/>`__.
+
+To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS` django settings variable. This variable is a list of format strings written in lower case.
+
+    ::
+
+        IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = ["csv", "xls"]
+
 
 Customizing email template for export job completion email
 ----------------------------------------------------------
@@ -186,7 +197,7 @@ The email template will get some context variables that you can use to customize
 
 
     ::
-        
+
         {
             export_job: The current instance of ExportJob model
             app_label: export_job.app_label
