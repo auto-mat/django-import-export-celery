@@ -161,7 +161,7 @@ Performing exports with celery
 Excluding export file formats in the admin site
 -----------------------------------------------
 
-All available file formats to export are taken from the `Tablib project <https://pypi.org/project/tablib/>`.
+All available file formats to export are taken from the `Tablib project <https://pypi.org/project/tablib/>`__.
 
 To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS` django settings variable. This variable is a list of format strings written in lower case.
 
