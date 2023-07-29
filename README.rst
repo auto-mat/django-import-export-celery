@@ -169,6 +169,14 @@ To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT
 
         IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = ["csv", "xls"]
 
+Customizing File Storage Backend
+--------------------------------
+
+Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings. For instance:
+
+    ::
+
+        IMPORT_EXPORT_CELERY_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 Customizing email template for export job completion email
 ----------------------------------------------------------
@@ -215,10 +223,10 @@ Before submitting a PR please run `flake8` and (in the examples directory) `pyth
 
 Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker-compose down celery`, `docker-compose up celery`.
 
-Comercial support
+Commercial support
 -----------------
 
-Comercial support is provided by `gradesta s.r.o <https://gradesta.com/support/>`_.
+Commercial support is provided by `gradesta s.r.o <https://gradesta.com/support/>`_.
 
 Credits
 -------

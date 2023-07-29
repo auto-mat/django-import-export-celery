@@ -135,3 +135,4 @@ IMPORT_EXPORT_CELERY_MODELS = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+IMPORT_EXPORT_CELERY_STORAGE = "django.core.files.storage.FileSystemStorage"
