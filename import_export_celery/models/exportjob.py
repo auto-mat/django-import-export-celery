@@ -12,6 +12,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
 
+from ..fields import ImportExportFileField
 from ..tasks import run_export_job
 from ..utils import get_formats
 
@@ -22,7 +23,7 @@ class ExportJob(models.Model):
         super().__init__(*args, **kwargs)
         self._content_type = None
 
-    file = models.FileField(
+    file = ImportExportFileField(
         verbose_name=_("exported file"),
         upload_to="django-import-export-celery-export-jobs",
         blank=False,

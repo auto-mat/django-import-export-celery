@@ -13,12 +13,13 @@ from django.utils.translation import gettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
 
+from ..fields import ImportExportFileField
 from ..tasks import run_import_job
 
 
 @with_author
 class ImportJob(models.Model):
-    file = models.FileField(
+    file = ImportExportFileField(
         verbose_name=_("File to be imported"),
         upload_to="django-import-export-celery-import-jobs",
         blank=False,
@@ -45,7 +46,7 @@ class ImportJob(models.Model):
         max_length=255,
     )
 
-    change_summary = models.FileField(
+    change_summary = ImportExportFileField(
         verbose_name=_("Summary of changes made by this import"),
         upload_to="django-import-export-celery-import-change-summaries",
         blank=True,
