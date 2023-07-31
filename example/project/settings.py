@@ -136,3 +136,11 @@ IMPORT_EXPORT_CELERY_MODELS = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 IMPORT_EXPORT_CELERY_STORAGE = "django.core.files.storage.FileSystemStorage"
+
+# Default import time limits (in seconds)
+IMPORT_EXPORT_CELERY_IMPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
+IMPORT_EXPORT_CELERY_IMPORT_HARD_TIME_LIMIT = 360  # 6 minutes
+
+# Default export time limits (in seconds)
+IMPORT_EXPORT_CELERY_EXPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
+IMPORT_EXPORT_CELERY_EXPORT_HARD_TIME_LIMIT = 360  # 6 minutes

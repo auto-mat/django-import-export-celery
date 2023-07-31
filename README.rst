@@ -58,7 +58,7 @@ By default a dry run of the import is initiated when the import object is create
         IMPORT_DRY_RUN_FIRST_TIME = False
 
 
-Preforming an import
+Performing an import
 --------------------
 
 You will find an example django application that uses django-import-export-celery for importing data. There are instructions for running the example application in the example directory's README file. Once you have it running, you can perform an import with the following steps.
@@ -177,6 +177,21 @@ Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to 
     ::
 
         IMPORT_EXPORT_CELERY_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+Customizing Task Time Limits
+----------------------------
+
+By default, there is no time limit on celery import/export tasks. This can be customized by setting the following variables in your Django settings file.
+
+    ::
+
+        # set import time limits (in seconds)
+        IMPORT_EXPORT_CELERY_IMPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
+        IMPORT_EXPORT_CELERY_IMPORT_HARD_TIME_LIMIT = 360  # 6 minutes
+
+        # set export time limits (in seconds)
+        IMPORT_EXPORT_CELERY_EXPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
+        IMPORT_EXPORT_CELERY_EXPORT_HARD_TIME_LIMIT = 360  # 6 minutes
 
 Customizing email template for export job completion email
 ----------------------------------------------------------
