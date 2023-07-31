@@ -6,7 +6,7 @@ from django.db import models
 class ImportExportFileField(models.FileField):
     def __init__(self, *args, **kwargs):
         # If the user has specified a custom storage backend, use it.
-        if settings.IMPORT_EXPORT_CELERY_STORAGE:
+        if getattr(settings, "IMPORT_EXPORT_CELERY_STORAGE", None):
             storage_class = get_storage_class(settings.IMPORT_EXPORT_CELERY_STORAGE)
             kwargs["storage"] = storage_class()
 
