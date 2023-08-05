@@ -8,7 +8,7 @@ from author.decorators import with_author
 from django.db import models, transaction
 from django.dispatch import receiver
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.utils.translation import gettext_lazy as _
 
 from import_export.formats.base_formats import DEFAULT_FORMATS
@@ -95,3 +95,13 @@ def importjob_post_save(sender, instance, **kwargs):
                 dry_run=getattr(settings, "IMPORT_DRY_RUN_FIRST_TIME", True),
             )
         )
+
+
+@receiver(post_delete, sender=ImportJob)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file related to the import job
+    """
+    if instance.file:
+        instance.file.delete()
+        instance.delete()
