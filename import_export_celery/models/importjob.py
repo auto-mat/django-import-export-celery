@@ -16,6 +16,10 @@ from import_export.formats.base_formats import DEFAULT_FORMATS
 from ..fields import ImportExportFileField
 from ..tasks import run_import_job
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @with_author
 class ImportJob(models.Model):
@@ -103,5 +107,10 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Deletes file related to the import job
     """
     if instance.file:
-        instance.file.delete()
-        instance.delete()
+        try:
+            instance.file.delete()
+        except Exception as e:
+            logger.error(
+                "Some error occurred while deleting ImportJob file: {0}".format(e)
+            )
+        ImportJob.objects.filter(id=instance.id).delete()
