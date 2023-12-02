@@ -188,7 +188,11 @@ def _run_import_job(import_job, dry_run=True):
     import_job.save()
 
 
-@shared_task(bind=False)
+@shared_task(
+    bind=False,
+    soft_time_limit=getattr(settings, "IMPORT_EXPORT_CELERY_IMPORT_SOFT_TIME_LIMIT", 0),
+    time_limit=getattr(settings, "IMPORT_EXPORT_CELERY_IMPORT_HARD_TIME_LIMIT", 0),
+)
 def run_import_job(pk, dry_run=True):
     log.info(f"Importing {pk} dry-run {dry_run}")
     import_job = models.ImportJob.objects.get(pk=pk)
@@ -201,7 +205,11 @@ def run_import_job(pk, dry_run=True):
         return
 
 
-@shared_task(bind=False)
+@shared_task(
+    bind=False,
+    soft_time_limit=getattr(settings, "IMPORT_EXPORT_CELERY_EXPORT_SOFT_TIME_LIMIT", 0),
+    time_limit=getattr(settings, "IMPORT_EXPORT_CELERY_EXPORT_HARD_TIME_LIMIT", 0),
+)
 def run_export_job(pk):
     log.info("Exporting %s" % pk)
     export_job = models.ExportJob.objects.get(pk=pk)
