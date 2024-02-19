@@ -172,11 +172,15 @@ To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT
 Customizing File Storage Backend
 --------------------------------
 
-Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings. For instance:
+Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings STORAGES definition. For instance:
 
     ::
 
-        IMPORT_EXPORT_CELERY_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+        STORAGES = {
+            "IMPORT_EXPORT_CELERY_STORAGE": {
+                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            },
+        }
 
 Customizing Task Time Limits
 ----------------------------

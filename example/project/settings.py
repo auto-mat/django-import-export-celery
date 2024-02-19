@@ -89,6 +89,11 @@ DATABASES = {
     },
 }
 
+STORAGES = {
+    "IMPORT_EXPORT_CELERY_STORAGE": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -135,7 +140,6 @@ IMPORT_EXPORT_CELERY_MODELS = {
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-IMPORT_EXPORT_CELERY_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # Default import time limits (in seconds)
 IMPORT_EXPORT_CELERY_IMPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
