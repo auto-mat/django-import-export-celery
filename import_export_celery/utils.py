@@ -4,6 +4,7 @@ from django.template.loader import get_template
 from django.conf import settings
 from django.urls import reverse
 from import_export.formats.base_formats import DEFAULT_FORMATS
+from importlib import import_module
 
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT = "Django: Export job completed"
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE = (
