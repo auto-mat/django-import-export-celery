@@ -169,9 +169,8 @@ To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT
 
         IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = ["csv", "xls"]
 
-
 Add Custom export file formats in the admin site
------------------------------------------------
+------------------------------------------------
 
 To  include custom file formats from the admin site, configure `IMPORT_EXPORT_CELERY_CUSTOM_FORMATS` django settings variable. This variable is a a list of string path to custom format classes.
 
