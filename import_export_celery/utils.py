@@ -15,6 +15,7 @@ IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = getattr(
     [],
 )
 
+CUSTOM_FORMATS = getattr(settings, "IMPORT_EXPORT_CELERY_CUSTOM_FORMATS", [])
 
 def get_formats():
     return [
@@ -22,7 +23,7 @@ def get_formats():
         for format in DEFAULT_FORMATS
         if format.TABLIB_MODULE.split(".")[-1].strip("_")
         not in IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS
-    ]
+    ] + CUSTOM_FORMATS
 
 
 def build_html_and_text_message(template_name, context={}):
