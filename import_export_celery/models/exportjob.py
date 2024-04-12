@@ -89,6 +89,9 @@ class ExportJob(models.Model):
         verbose_name = _("Export job")
         verbose_name_plural = _("Export jobs")
 
+    def __str__(self):
+        return f"Export {self.model.title()} - par {self.author} - le {self.created_at.date()} - {self.job_status}"
+
     def get_resource_class(self):
         if self.resource:
             return (
