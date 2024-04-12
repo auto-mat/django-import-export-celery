@@ -53,6 +53,15 @@ def create_export_job_action(modeladmin, request, queryset):
             ),
             site_of_origin=request.scheme + "://" + request.get_host(),
         )
+
+        #  Load the ExportJob if only one Resource
+        resource_choices = ej.get_resource_choices()
+        format_choices = get_formats()
+        if len(resource_choices) == 1 and len(format_choices) == 1:
+            ej.resource = resource_choices[0][0]
+            ej.format = format_choices[0].CONTENT_TYPE
+            ej.save()
+
     rurl = reverse(
         "admin:%s_%s_change"
         % (
