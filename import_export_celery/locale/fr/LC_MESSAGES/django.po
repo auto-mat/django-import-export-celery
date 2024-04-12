@@ -1,0 +1,150 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Dan <pluthd@gmail.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-17 20:55+0000\n"
+"PO-Revision-Date: 2023-05-17 21:56+0100\n"
+"Last-Translator: Daniel Pluth <pluthd@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.3.1\n"
+
+#: import_export_celery/admin.py:12
+msgid "Job status info"
+msgstr "Informations sur l'état du travail"
+
+#: import_export_celery/admin.py:22 import_export_celery/models/importjob.py:62
+msgid "Name of model to import to"
+msgstr "Nom du modèle à importer"
+
+#: import_export_celery/admin_actions.py:20
+msgid "Perform import"
+msgstr "Effectuer l'importation"
+
+#: import_export_celery/admin_actions.py:29
+msgid "Perform dry import"
+msgstr "Effectuer une importation à blanc"
+
+#: import_export_celery/admin_actions.py:39
+msgid "Run export job"
+msgstr "Lancer le travail d'exportation"
+
+#: import_export_celery/admin_actions.py:67
+msgid "Export with celery"
+msgstr "Exporter avec Celery"
+
+#: import_export_celery/apps.py:7
+msgid "Import Export Celery"
+msgstr "Importer Exporter avec Celery"
+
+#: import_export_celery/models/exportjob.py:27
+msgid "exported file"
+msgstr "fichier exporté"
+
+#: import_export_celery/models/exportjob.py:35
+#: import_export_celery/models/importjob.py:30
+msgid "Have we started processing the file? If so when?"
+msgstr "Avons-nous commencé le traitement du fichier ? Si oui, quand ?"
+
+#: import_export_celery/models/exportjob.py:42
+#: import_export_celery/models/importjob.py:67
+msgid "Status of the job"
+msgstr "Statut du travail"
+
+#: import_export_celery/models/exportjob.py:48
+msgid "Format of file to be exported"
+msgstr "Format du fichier à exporter"
+
+#: import_export_celery/models/exportjob.py:55
+msgid "App label of model to export from"
+msgstr "Nom de l'application du modèle à exporter"
+
+#: import_export_celery/models/exportjob.py:60
+msgid "Name of model to export from"
+msgstr "Nom du modèle à exporter"
+
+#: import_export_celery/models/exportjob.py:65
+msgid "Resource to use when exporting"
+msgstr "Ressource à utiliser lors de l'exportation"
+
+#: import_export_celery/models/exportjob.py:71
+msgid "JSON list of pks to export"
+msgstr "Liste JSON des clés primaires à exporter"
+
+#: import_export_celery/models/exportjob.py:76
+msgid "Send me an email when this export job is complete"
+msgstr "Envoyez-moi un email lorsque ce travail d'exportation est terminé"
+
+#: import_export_celery/models/exportjob.py:81
+msgid "Site of origin"
+msgstr "Site d'origine"
+
+#: import_export_celery/models/exportjob.py:87
+msgid "Export job"
+msgstr "Travail d'exportation"
+
+#: import_export_celery/models/exportjob.py:88
+msgid "Export jobs"
+msgstr "Travaux d'exportation"
+
+#: import_export_celery/models/importjob.py:22
+msgid "File to be imported"
+msgstr "Fichier à importer"
+
+#: import_export_celery/models/importjob.py:37
+msgid "Has the import been completed? If so when?"
+msgstr "L'importation a-t-elle été complétée ? Si oui, quand ?"
+
+#: import_export_celery/models/importjob.py:44
+msgid "Format of file to be imported"
+msgstr "Format du fichier à importer"
+
+#: import_export_celery/models/importjob.py:49
+msgid "Summary of changes made by this import"
+msgstr "Résumé des changements effectués par cette importation"
+
+#: import_export_celery/models/importjob.py:56
+msgid "Errors"
+msgstr "Erreurs"
+
+#: import_export_celery/models/importjob.py:73
+msgid "Import job"
+msgstr "Travail d'importation"
+
+#: import_export_celery/models/importjob.py:74
+msgid "Import jobs"
+msgstr "Travaux d'importation"
+
+#: import_export_celery/tasks.py:61
+#, python-format
+msgid "Imported file has a wrong encoding: %s"
+msgstr "Le fichier importé a un encodage incorrect : %s"
+
+#: import_export_celery/tasks.py:68
+#, python-format
+msgid "Error reading file: %s"
+msgstr "Erreur de lecture du fichier : %s"
+
+#: import_export_celery/tasks.py:101
+#, python-format
+msgid ""
+"Line: %s - %s\n"
+"\t%s\n"
+"%s"
+msgstr ""
+"Ligne : %s - %s\n"
+"\t%s\n"
+"%s"
+
+#: import_export_celery/tasks.py:190
+#, python-format
+msgid "Import error %s"
+msgstr "Erreur d'importation %s"
