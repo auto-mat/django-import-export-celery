@@ -143,3 +143,6 @@ def exportjob_post_save(sender, instance, **kwargs):
         instance.processing_initiated = timezone.now()
         instance.save()
         transaction.on_commit(lambda: run_export_job.delay(instance.pk))
+        messages.add_message(
+            request, messages.SUCCESS, "L'export a été initié avec succès. Vous pouvez actualiser cette page pour suivre son avancement. Une fois l'export terminé, vous recevrez un email, et il sera disponible en téléchargement sur cette page."
+        )
