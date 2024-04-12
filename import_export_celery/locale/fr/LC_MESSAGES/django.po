@@ -19,7 +19,7 @@ msgstr ""
 
 #: import_export_celery/admin.py:12
 msgid "Job status info"
-msgstr "Informations sur l'état du travail"
+msgstr "Statut de l'export"
 
 #: import_export_celery/admin.py:22 import_export_celery/models/importjob.py:62
 msgid "Name of model to import to"
@@ -43,7 +43,7 @@ msgstr "Exporter avec Celery"
 
 #: import_export_celery/apps.py:7
 msgid "Import Export Celery"
-msgstr "Importer Exporter avec Celery"
+msgstr "Exports"
 
 #: import_export_celery/models/exportjob.py:27
 msgid "exported file"
@@ -52,7 +52,7 @@ msgstr "fichier exporté"
 #: import_export_celery/models/exportjob.py:35
 #: import_export_celery/models/importjob.py:30
 msgid "Have we started processing the file? If so when?"
-msgstr "Avons-nous commencé le traitement du fichier ? Si oui, quand ?"
+msgstr "Démarrage de l'export"
 
 #: import_export_celery/models/exportjob.py:42
 #: import_export_celery/models/importjob.py:67
@@ -93,7 +93,7 @@ msgstr "Travail d'exportation"
 
 #: import_export_celery/models/exportjob.py:88
 msgid "Export jobs"
-msgstr "Travaux d'exportation"
+msgstr "Exports"
 
 #: import_export_celery/models/importjob.py:22
 msgid "File to be imported"
