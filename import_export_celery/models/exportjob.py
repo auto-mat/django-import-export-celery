@@ -83,6 +83,8 @@ class ExportJob(models.Model):
         default="",
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         verbose_name = _("Export job")
         verbose_name_plural = _("Export jobs")
