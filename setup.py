@@ -2,6 +2,7 @@ import codecs
 import os
 from setuptools import setup, find_packages
 import subprocess
+import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,7 +15,7 @@ try:
         .strip()
     )
 except subprocess.CalledProcessError:
-    version = "1.7",
+    version="1.7",
 
 setup(
     name="django-import-export-celery",
