@@ -15,7 +15,7 @@ try:
         .strip()
     )
 except subprocess.CalledProcessError:
-    version="1.7",
+    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
 setup(
     name="django-import-export-celery",
