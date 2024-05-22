@@ -169,18 +169,33 @@ To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT
 
         IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = ["csv", "xls"]
 
+
 Customizing File Storage Backend
 --------------------------------
 
-Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings STORAGES definition. For instance:
+**If you are using the new Django 4.2 STORAGES**:
+
+By default, `import_export_celery` uses Django `default` storage.
+To use your own storage, use the the `IMPORT_EXPORT_CELERY_STORAGE_ALIAS` variable in your Django settings and adding the STORAGES definition.
+For instance:
 
     ::
 
         STORAGES = {
-            "IMPORT_EXPORT_CELERY_STORAGE": {
+            "import_export_celery": {
                 "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             },
         }
+        IMPORT_EXPORT_CELERY_STORAGE_ALIAS = 'import_export_celery'
+
+**DEPRECATED: If you are using old style storages**:
+
+Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings. For instance:
+
+    ::
+
+        IMPORT_EXPORT_CELERY_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
 
 Customizing Task Time Limits
 ----------------------------

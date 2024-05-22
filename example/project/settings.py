@@ -98,18 +98,6 @@ else:
         },
     }
 
-STORAGES = {
-    "IMPORT_EXPORT_CELERY_STORAGE": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
