@@ -1,0 +1,7 @@
+Django
+django-import-export
+django-author
+html2text
+celery
+psycopg2-binary
+django-admin-smoke-tests

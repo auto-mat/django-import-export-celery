@@ -67,6 +67,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "debug": DEBUG,
         },
     },
 ]
@@ -78,16 +79,24 @@ REDIS_URL = os.environ.get("REDIS_URL", "redis://redis")
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DATABASE_NAME", "pguser"),
-        "USER": os.environ.get("DATABASE_USER", "pguser"),
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD", "foobar"),
-        "HOST": os.environ.get("DATABASE_HOST", "postgres"),
-        "PORT": os.environ.get("DATABASE_PORT", ""),
-    },
-}
+if os.environ.get("DATABASE_TYPE") == "sqlite":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.environ.get("DATABASE_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.environ.get("DATABASE_NAME", "pguser"),
+            "USER": os.environ.get("DATABASE_USER", "pguser"),
+            "PASSWORD": os.environ.get("DATABASE_PASSWORD", "foobar"),
+            "HOST": os.environ.get("DATABASE_HOST", "postgres"),
+            "PORT": os.environ.get("DATABASE_PORT", ""),
+        },
+    }
 
 STORAGES = {
     "IMPORT_EXPORT_CELERY_STORAGE": {
