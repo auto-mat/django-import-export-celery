@@ -1,0 +1,9 @@
+[run]
+omit =
+   */virtualenvs/*,
+   */migrations/*,
+   */site-packages/*
+include = import_export_celery/*
+plugins =
+    django_coverage_plugin
+branch = True
