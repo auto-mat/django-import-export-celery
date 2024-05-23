@@ -228,7 +228,7 @@ def run_export_job(pk):
                 change_job_status(
                     export_job,
                     "export",
-                    f"Exporting row {self.row_number}/{qs_len}",
+                    f"En cours ({self.row_number}/{qs_len} lignes)",
                 )
             self.row_number += 1
             return super().export_resource(*args, **kwargs)
@@ -238,11 +238,10 @@ def run_export_job(pk):
     data = resource.export(queryset)
     format = get_format(export_job)
     serialized = format.export_data(data)
-    change_job_status(export_job, "export", "Export complete")
-    filename = "{app}-{model}-{date}.{extension}".format(
-        app=export_job.app_label,
-        model=export_job.model,
-        date=str(timezone.now()),
+    change_job_status(export_job, "export", "Export terminé")
+    filename = "Export {model} - {date}.{extension}".format(
+        model=export_job.model.title(),
+        date=str(timezone.now().strftime("%Y-%m-%d-%H-%M-%S")),
         extension=format.get_extension(),
     )
     if not format.is_binary():

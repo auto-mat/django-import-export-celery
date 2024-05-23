@@ -4,6 +4,7 @@ from django.template.loader import get_template
 from django.conf import settings
 from django.urls import reverse
 from import_export.formats.base_formats import DEFAULT_FORMATS
+from importlib import import_module
 
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT = "Django: Export job completed"
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE = (
@@ -15,14 +16,28 @@ IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS = getattr(
     [],
 )
 
+IMPORT_EXPORT_CELERY_CUSTOM_FORMATS = getattr(settings, "IMPORT_EXPORT_CELERY_CUSTOM_FORMATS", [])
 
 def get_formats():
+    custom_formats = get_custom_formats()
+
     return [
         format
         for format in DEFAULT_FORMATS
         if format.TABLIB_MODULE.split(".")[-1].strip("_")
         not in IMPORT_EXPORT_CELERY_EXCLUDED_FORMATS
-    ]
+    ] + custom_formats
+
+def get_custom_formats():
+    # Load custom formats if any
+    custom_formats = []
+    if IMPORT_EXPORT_CELERY_CUSTOM_FORMATS:
+        for formatxx in IMPORT_EXPORT_CELERY_CUSTOM_FORMATS:
+            target_module_directory, target_format_name = formatxx.rsplit('.', 1)
+            target_module = import_module(target_module_directory)
+            target_format = getattr(target_module, target_format_name)
+            custom_formats.append(target_format)
+    return custom_formats
 
 
 def build_html_and_text_message(template_name, context={}):
