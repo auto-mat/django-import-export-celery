@@ -80,13 +80,12 @@ jobs:
           DJANGO_VERSION=`echo $DJANGO_VERSION | sed 's/\.//'`
           tox -e py${PYTHON_VERSION}-django${DJANGO_VERSION}
 
-          # TODO: activate when organization token will be available
-          # - name: Upload coverage to Codecov
-          #   uses: codecov/codecov-action@v4
-          #   with:
-          #     token: ${{ secrets.CODECOV_TOKEN }}
-          #     files: coverage.xml
-          #     fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
 
   flake8:
     name: flake8
