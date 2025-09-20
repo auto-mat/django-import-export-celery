@@ -17,17 +17,6 @@ class InitializeStorageClassTests(TestCase):
     def test_default(self):
         self.assertIsInstance(lazy_initialize_storage_class(), FileSystemStorage)
 
-    # @unittest.skipUnless(
-    #     django.VERSION < (5, 1), "Test only applicable for Django versions < 5.1"
-    # )
-    # @override_settings(
-    #     IMPORT_EXPORT_CELERY_STORAGE="winners.tests.test_fields.FooTestingStorage"
-    # )
-    # def test_old_style(self):
-    #     del settings.IMPORT_EXPORT_CELERY_STORAGE_ALIAS
-    #     del settings.STORAGES
-    #     self.assertIsInstance(lazy_initialize_storage_class(), FooTestingStorage)
-
     @unittest.skipUnless(
         (4, 2) <= django.VERSION, "Test only applicable for Django 4.2 and later"
     )
