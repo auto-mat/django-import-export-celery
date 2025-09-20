@@ -173,7 +173,7 @@ To exclude or disable file formats from the admin site, configure `IMPORT_EXPORT
 Customizing File Storage Backend
 --------------------------------
 
-**If you are using the new Django 4.2 STORAGES**:
+**If you are using the Django 4.2+ STORAGES**:
 
 By default, `import_export_celery` uses Django `default` storage.
 To use your own storage, use the the `IMPORT_EXPORT_CELERY_STORAGE_ALIAS` variable in your Django settings and adding the STORAGES definition.
@@ -188,19 +188,12 @@ For instance:
         }
         IMPORT_EXPORT_CELERY_STORAGE_ALIAS = 'import_export_celery'
 
-**DEPRECATED: If you are using old style storages**:
-
-Define a custom storage backend by adding the `IMPORT_EXPORT_CELERY_STORAGE` to your Django settings. For instance:
-
-    ::
-
-        IMPORT_EXPORT_CELERY_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
 
 Customizing Task Time Limits
 ----------------------------
 
 By default, there is no time limit on celery import/export tasks. This can be customized by setting the following variables in your Django settings file.
+
 
     ::
 

@@ -74,10 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "winners.wsgi.application"
 
-BROKER_URL = os.environ.get("REDIS_URL", "redis://redis")
-REDIS_URL = os.environ.get("REDIS_URL", "redis://redis")
-
-# Modern Celery configuration
+# Celery configuration
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis")
 CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://redis")
 # Database
@@ -134,8 +131,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
