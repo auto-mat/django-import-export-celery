@@ -21,7 +21,13 @@ try:
         .strip()
     )
 except subprocess.CalledProcessError:
-    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    # Use git commit hash for stable dev versions to avoid timestamp issues
+    try:
+        commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
+        version = f"0.dev+{commit_hash}"
+    except subprocess.CalledProcessError:
+        # Static fallback version for tox compatibility
+        version = "0.dev"
 
 setup(
     name="django-import-export-celery",
