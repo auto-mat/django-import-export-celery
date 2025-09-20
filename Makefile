@@ -4,7 +4,7 @@ docker compose: Dockerfile
 	docker compose build --build-arg UID=$(shell id -u)
 	docker compose up -d postgres redis
 	@echo "Waiting for PostgreSQL to be ready..."
-	@sleep 15
+	@sleep 10
 	@echo "Starting web and celery containers..."
 	docker compose up -d web celery
 	@sleep 10

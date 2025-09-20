@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -75,8 +74,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "winners.wsgi.application"
 
 # Celery configuration
-CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis")
-CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://redis")
+CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 

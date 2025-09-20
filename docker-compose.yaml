@@ -9,6 +9,7 @@ services:
    - redis
   environment:
    DATABASE_HOST: postgres
+   REDIS_URL: redis://redis:6379/0
   tty: true
   stdin_open: true
   working_dir: /proj/
@@ -18,19 +19,25 @@ services:
    - ./pyenv:/home/test
  celery:
   build: .
-  entrypoint: sh -c "pip install -e /proj && pip install redis && cd example && celery -A project worker --loglevel=info -n worker1"
+  entrypoint: >
+    sh -c "pip install -e /proj &&
+           pip install redis &&
+           cd example &&
+           celery -A project worker --loglevel=info -n worker1"
   depends_on:
-   - postgres
-   - redis
+    - postgres
+    - redis
   environment:
-   DATABASE_HOST: postgres
+    DATABASE_HOST: postgres
+    REDIS_URL: redis://redis:6379/0
   tty: true
   stdin_open: true
   working_dir: /proj/
   user: test
   volumes:
-   - ./:/proj/
-   - ./pyenv:/home/test
+    - ./:/proj/
+    - ./pyenv:/home/test
+
  redis:
   image: redis
  postgres:
