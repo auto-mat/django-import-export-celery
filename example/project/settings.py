@@ -76,6 +76,10 @@ WSGI_APPLICATION = "winners.wsgi.application"
 
 BROKER_URL = os.environ.get("REDIS_URL", "redis://redis")
 REDIS_URL = os.environ.get("REDIS_URL", "redis://redis")
+
+# Modern Celery configuration
+CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://redis")
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -83,7 +87,9 @@ if os.environ.get("DATABASE_TYPE") == "sqlite":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.environ.get("DATABASE_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+            "NAME": os.environ.get(
+                "DATABASE_NAME", os.path.join(BASE_DIR, "db.sqlite3")
+            ),
         }
     }
 else:
@@ -93,7 +99,7 @@ else:
             "NAME": os.environ.get("DATABASE_NAME", "pguser"),
             "USER": os.environ.get("DATABASE_USER", "pguser"),
             "PASSWORD": os.environ.get("DATABASE_PASSWORD", "foobar"),
-            "HOST": os.environ.get("DATABASE_HOST", "postgres"),
+            "HOST": os.environ.get("DATABASE_HOST", "localhost"),
             "PORT": os.environ.get("DATABASE_PORT", ""),
         },
     }
@@ -103,7 +109,10 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation"
+            ".UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -129,6 +138,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# Fix auto-created primary key warnings
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Static files (CSS, JavaScript, Images)

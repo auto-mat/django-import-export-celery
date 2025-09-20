@@ -6,7 +6,13 @@ import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-requires = ["Django", "django-import-export", "django-author", "html2text"]
+requires = [
+    "Django>=4.2",
+    "django-import-export>=4.0",
+    "django-author>=1.2.0",
+    "html2text>=2020.1.16",
+    "celery>=5.3.0"
+]
 
 try:
     version = (
@@ -44,8 +50,14 @@ setup(
         "Intended Audience :: Developers",
         "Environment :: Web Environment",
         "Framework :: Django",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
+        "Framework :: Django :: 4.2",
+        "Framework :: Django :: 5.0",
+        "Framework :: Django :: 5.1",
+        "Framework :: Django :: 5.2",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
 )

@@ -1,5 +1,4 @@
 from django.contrib.messages.storage.fallback import FallbackStorage
-
 from django_admin_smoke_tests import tests
 
 

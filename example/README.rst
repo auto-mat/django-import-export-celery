@@ -1,74 +1,41 @@
 Install
 =======
 
-Launch docker-compose
+Quick setup with make:
 
 .. code-block:: bash
 
-   docker-compose up
+   make
 
-Attach to docker-compose
-
-.. code-block:: bash
-
-   docker attach djangoimportexportcelery_web
-
-Install Django dependencies:
+Or manual setup:
 
 .. code-block:: bash
 
-    cd example
-    pipenv install
-    pipenv shell
-
-Initialize database tables:
-
-.. code-block:: bash
-
-    python manage.py migrate
-
-Create a super-user for the admin:
-
-.. code-block:: bash
-
-    python manage.py createsuperuser
-
-Restart docker-compose
-
-.. code-block:: bash
-
-   docker-compose down
-
+   docker compose up -d postgres redis
+   docker compose up -d web
+   docker exec django-import-export-celery-web-1 /proj/setup-dev-env.sh
 
 Run
 ===
 
-Launch docker-compose
+Enter the development container:
 
 .. code-block:: bash
 
-   docker-compose up
+   docker exec -it django-import-export-celery-web-1 bash
 
-Attach to docker-compose
-
-.. code-block:: bash
-
-   docker attach djangoimportexportcelery_web
-
-Enter pipenv shell:
+Run the Django server:
 
 .. code-block:: bash
 
-    cd example
-    pipenv shell
+   cd example
+   export DATABASE_HOST=postgres
+   python manage.py runserver 0.0.0.0:8000
 
+The example app will be available from http://localhost:8001/admin
 
-Actually run the server
+**Login credentials:**
+- Username: admin
+- Password: admin
 
-.. code-block:: bash
-
-    python manage.py runserver 0.0.0.0:8000
-
-The example app will be available from http://127.0.0.1:8001/admin
-
-Note: parts of this example app were taken from the [djano-leaflet](https://github.com/makinacorpus/django-leaflet/tree/master/example) example app.
+Note: parts of this example app were taken from the [django-leaflet](https://github.com/makinacorpus/django-leaflet/tree/master/example) example app.
