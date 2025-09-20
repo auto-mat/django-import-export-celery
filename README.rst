@@ -257,7 +257,7 @@ You can enter a preconfigured dev environment by first running `make` and then l
 
 Before submitting a PR please run `flake8` and (in the examples directory) `python3 manange.py test`.
 
-Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker-compose down celery`, `docker-compose up celery`.
+Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker compose restart celery`.
 
 Commercial support
 ------------------

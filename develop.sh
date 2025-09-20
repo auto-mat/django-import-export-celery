@@ -1,7 +1,14 @@
 #!/bin/bash
-docker compose down
-docker compose up -d
+echo "Starting database and redis services..."
+docker compose up -d postgres redis
 echo "Waiting for services to start..."
-sleep 10
-echo "Entering development container..."
-exec docker exec -u test -it django-import-export-celery-web-1 bash --init-file "/proj/dev-entrypoint.sh"
+sleep 5
+echo "Entering development container (without auto-starting web server)..."
+exec docker run --rm -it \
+  --network django-import-export-celery_default \
+  -v ./:/proj/ \
+  -v ./pyenv:/home/test \
+  -w /proj/ \
+  -u test \
+  -e DATABASE_HOST=postgres \
+  django-import-export-celery-web bash --init-file "/proj/dev-entrypoint.sh"

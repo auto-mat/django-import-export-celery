@@ -1,12 +1,14 @@
 services:
  web:
   build: .
-  entrypoint: /bin/bash
+  entrypoint: sh -c "pip install -e /proj && cd example && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   ports:
-   - "8001:8000"
-  links:
+   - "8000:8000"
+  depends_on:
    - postgres
    - redis
+  environment:
+   DATABASE_HOST: postgres
   tty: true
   stdin_open: true
   working_dir: /proj/
@@ -16,13 +18,15 @@ services:
    - ./pyenv:/home/test
  celery:
   build: .
-  entrypoint: sh -c "pip install -e /proj && pip install redis && celery -A project.celery worker -l info"
+  entrypoint: sh -c "pip install -e /proj && pip install redis && cd example && celery -A project worker --loglevel=info -n worker1"
   depends_on:
    - postgres
    - redis
+  environment:
+   DATABASE_HOST: postgres
   tty: true
   stdin_open: true
-  working_dir: /proj/example
+  working_dir: /proj/
   user: test
   volumes:
    - ./:/proj/

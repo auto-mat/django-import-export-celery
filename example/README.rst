@@ -18,21 +18,41 @@ Or manual setup:
 Run
 ===
 
-Enter the development container:
+The Django server starts automatically after setup. If you need to restart it:
+
+.. code-block:: bash
+
+   docker compose restart web
+
+For debugging or manual control, enter the development container:
 
 .. code-block:: bash
 
    docker exec -it django-import-export-celery-web-1 bash
 
-Run the Django server:
+Start Celery worker:
+
+**Option 1: Using docker compose (recommended):**
+
+.. code-block:: bash
+
+   docker compose up -d celery
+
+**Option 2: Manual startup (for debugging):**
+
+.. code-block:: bash
+
+   docker exec -it django-import-export-celery-web-1 bash
 
 .. code-block:: bash
 
    cd example
    export DATABASE_HOST=postgres
-   python manage.py runserver 0.0.0.0:8000
+   celery -A project worker --loglevel=info -n worker1
 
-The example app will be available from http://localhost:8001/admin
+The example app will be available from http://localhost:8000/admin/
+
+**Note:** Both Django and Celery need to be running for import/export jobs to work properly.
 
 **Login credentials:**
 - Username: admin
