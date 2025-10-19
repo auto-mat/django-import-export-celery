@@ -269,6 +269,7 @@ Run tests
 
 You can run the test suite with::
 
+  make # wait for docker to start
   make test
 
 Formatting
