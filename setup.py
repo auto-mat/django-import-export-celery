@@ -1,8 +1,8 @@
 import codecs
 import os
-from setuptools import setup, find_packages
 import subprocess
-import datetime
+
+from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,7 +11,7 @@ requires = [
     "django-import-export>=4.0",
     "django-author>=1.2.0",
     "html2text>=2020.1.16",
-    "celery>=5.3.0"
+    "celery>=5.3.0",
 ]
 
 try:
@@ -23,7 +23,11 @@ try:
 except subprocess.CalledProcessError:
     # Use git commit hash for stable dev versions to avoid timestamp issues
     try:
-        commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip()
+        commit_hash = (
+            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+            .decode("utf-8")
+            .strip()
+        )
         version = f"0.dev+{commit_hash}"
     except subprocess.CalledProcessError:
         # Static fallback version for tox compatibility
@@ -37,9 +41,7 @@ setup(
     url="https://github.com/auto-mat/django-import-export-celery",
     download_url="http://pypi.python.org/pypi/django-import-export-celery/",
     description="Process long running django imports and exports in celery",
-    long_description=codecs.open(
-        os.path.join(here, "README.rst"), "r", "utf-8"
-    ).read(),
+    long_description=codecs.open(os.path.join(here, "README.rst"), "r", "utf-8").read(),
     long_description_content_type="text/x-rst",
     license=(
         "License :: OSI Approved :: GNU Lesser General Public License v3.0 or"

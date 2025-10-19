@@ -8,23 +8,42 @@ import import_export_celery.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0009_alter_exportjob_options_alter_importjob_options_and_more'),
+        (
+            "import_export_celery",
+            "0009_alter_exportjob_options_alter_importjob_options_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='exportjob',
-            name='file',
-            field=import_export_celery.fields.ImportExportFileField(max_length=255, storage=import_export_celery.fields.lazy_initialize_storage_class, upload_to='django-import-export-celery-export-jobs', verbose_name='exported file'),
+            model_name="exportjob",
+            name="file",
+            field=import_export_celery.fields.ImportExportFileField(
+                max_length=255,
+                storage=import_export_celery.fields.lazy_initialize_storage_class,
+                upload_to="django-import-export-celery-export-jobs",
+                verbose_name="exported file",
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='change_summary',
-            field=import_export_celery.fields.ImportExportFileField(blank=True, null=True, storage=import_export_celery.fields.lazy_initialize_storage_class, upload_to='django-import-export-celery-import-change-summaries', verbose_name='Summary of changes made by this import'),
+            model_name="importjob",
+            name="change_summary",
+            field=import_export_celery.fields.ImportExportFileField(
+                blank=True,
+                null=True,
+                storage=import_export_celery.fields.lazy_initialize_storage_class,
+                upload_to="django-import-export-celery-import-change-summaries",
+                verbose_name="Summary of changes made by this import",
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='file',
-            field=import_export_celery.fields.ImportExportFileField(max_length=255, storage=import_export_celery.fields.lazy_initialize_storage_class, upload_to='django-import-export-celery-import-jobs', verbose_name='File to be imported'),
+            model_name="importjob",
+            name="file",
+            field=import_export_celery.fields.ImportExportFileField(
+                max_length=255,
+                storage=import_export_celery.fields.lazy_initialize_storage_class,
+                upload_to="django-import-export-celery-import-jobs",
+                verbose_name="File to be imported",
+            ),
         ),
     ]

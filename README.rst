@@ -248,9 +248,39 @@ For developers of this library
 
 You can enter a preconfigured dev environment by first running `make` and then launching `./develop.sh` to get into a docker compose environment packed with **redis**, **celery**, **postgres** and everything you need to run and test django-import-export-celery.
 
-Before submitting a PR please run `flake8` and (in the examples directory) `python3 manange.py test`.
+Before submitting a PR please run `precommit` and ensure tests pass (see below).
 
-Please note, that you need to restart celery for changes to propogate to the workers. Do this with `docker compose restart celery`.
+Please note, that you need to restart celery for changes to propagate to the workers. Do this with `docker compose restart celery`.
+
+.. _create_venv:
+
+Create virtual environment
+--------------------------
+
+Once you have cloned and checked out the repository, you can install a new development environment as follows::
+
+  python -m venv .venv
+  source .venv/bin/activate
+  python -m pip install '.[dev]'
+  pip install psycopg2-binary django-admin-smoke-tests
+
+Run tests
+---------
+
+You can run the test suite with::
+
+  make test
+
+Formatting
+----------
+
+To install pre-commit::
+
+  python -m pip install pre-commit
+
+Then run::
+
+  pre-commit install
 
 Commercial support
 ------------------

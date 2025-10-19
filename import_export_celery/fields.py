@@ -13,7 +13,6 @@ def lazy_initialize_storage_class():
     return storages["default"]
 
 
-
 class ImportExportFileField(models.FileField):
     def __init__(self, *args, **kwargs):
         kwargs["storage"] = lazy_initialize_storage_class

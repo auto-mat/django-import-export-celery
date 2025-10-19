@@ -1,3 +1,5 @@
+RUN_TEST_COMMAND=PYTHONPATH=".:example:${PYTHONPATH}" python -W error -m django test example --settings=project.settings
+
 docker compose: Dockerfile
 	mkdir -p pyenv
 	mkdir -p db
@@ -21,3 +23,5 @@ docker compose: Dockerfile
 	@echo "  docker compose logs celery                            # View celery logs"
 	@echo "👤 Login: admin / admin"
 
+test: ## run tests with the default Python
+	$(RUN_TEST_COMMAND)

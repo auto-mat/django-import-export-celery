@@ -106,7 +106,5 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         try:
             instance.file.delete()
         except Exception as e:
-            logger.error(
-                "Some error occurred while deleting ImportJob file: {0}".format(e)
-            )
+            logger.error(f"Some error occurred while deleting ImportJob file: {e}")
         ImportJob.objects.filter(id=instance.id).delete()
