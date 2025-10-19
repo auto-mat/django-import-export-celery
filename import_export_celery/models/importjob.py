@@ -1,22 +1,18 @@
 # Copyright (C) 2019 o.s. Auto*Mat
 
-from django.conf import settings
-from django.utils import timezone
+import logging
 
 from author.decorators import with_author
-
+from django.conf import settings
 from django.db import models, transaction
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-
-from django.db.models.signals import post_save, post_delete
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
 from import_export.formats.base_formats import DEFAULT_FORMATS
 
 from ..fields import ImportExportFileField
 from ..tasks import run_import_job
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +106,5 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         try:
             instance.file.delete()
         except Exception as e:
-            logger.error(
-                "Some error occurred while deleting ImportJob file: {0}".format(e)
-            )
+            logger.error(f"Some error occurred while deleting ImportJob file: {e}")
         ImportJob.objects.filter(id=instance.id).delete()

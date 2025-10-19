@@ -1,6 +1,7 @@
 import os
-from django.test import TestCase, override_settings
+
 from django.core.files.base import ContentFile
+from django.test import TestCase, override_settings
 
 from import_export_celery.models.exportjob import ExportJob
 from import_export_celery.models.importjob import ImportJob
@@ -21,16 +22,12 @@ class ImportJobTestCases(TestCase):
 
 class ExportJobTestCases(TestCase):
     def test_create_export_job_default_email_on_completion(self):
-        job = ExportJob.objects.create(
-            app_label="winners", model="Winner"
-        )
+        job = ExportJob.objects.create(app_label="winners", model="Winner")
         job.refresh_from_db()
         self.assertTrue(job.email_on_completion)
 
     @override_settings(EXPORT_JOB_EMAIL_ON_COMPLETION=False)
     def test_create_export_job_false_email_on_completion(self):
-        job = ExportJob.objects.create(
-            app_label="winners", model="Winner"
-        )
+        job = ExportJob.objects.create(app_label="winners", model="Winner")
         job.refresh_from_db()
         self.assertFalse(job.email_on_completion)

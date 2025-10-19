@@ -1,7 +1,6 @@
 from django.db import models
-
-from import_export.resources import ModelResource
 from import_export.fields import Field
+from import_export.resources import ModelResource
 
 
 class Winner(models.Model):

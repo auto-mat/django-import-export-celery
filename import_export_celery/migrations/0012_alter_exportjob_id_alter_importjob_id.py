@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('import_export_celery', '0011_alter_exportjob_email_on_completion'),
+        ("import_export_celery", "0011_alter_exportjob_email_on_completion"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='exportjob',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="exportjob",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
         migrations.AlterField(
-            model_name='importjob',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="importjob",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
     ]

@@ -1,74 +1,61 @@
 Install
 =======
 
-Launch docker-compose
+Quick setup with make:
 
 .. code-block:: bash
 
-   docker-compose up
+   make
 
-Attach to docker-compose
-
-.. code-block:: bash
-
-   docker attach djangoimportexportcelery_web
-
-Install Django dependencies:
+Or manual setup:
 
 .. code-block:: bash
 
-    cd example
-    pipenv install
-    pipenv shell
-
-Initialize database tables:
-
-.. code-block:: bash
-
-    python manage.py migrate
-
-Create a super-user for the admin:
-
-.. code-block:: bash
-
-    python manage.py createsuperuser
-
-Restart docker-compose
-
-.. code-block:: bash
-
-   docker-compose down
-
+   docker compose up -d postgres redis
+   docker compose up -d web
+   docker exec django-import-export-celery-web-1 /proj/setup-dev-env.sh
 
 Run
 ===
 
-Launch docker-compose
+The Django server starts automatically after setup. If you need to restart it:
 
 .. code-block:: bash
 
-   docker-compose up
+   docker compose restart web
 
-Attach to docker-compose
-
-.. code-block:: bash
-
-   docker attach djangoimportexportcelery_web
-
-Enter pipenv shell:
+For debugging or manual control, enter the development container:
 
 .. code-block:: bash
 
-    cd example
-    pipenv shell
+   docker exec -it django-import-export-celery-web-1 bash
 
+Start Celery worker:
 
-Actually run the server
+**Option 1: Using docker compose (recommended):**
 
 .. code-block:: bash
 
-    python manage.py runserver 0.0.0.0:8000
+   docker compose up -d celery
 
-The example app will be available from http://127.0.0.1:8001/admin
+**Option 2: Manual startup (for debugging):**
 
-Note: parts of this example app were taken from the [djano-leaflet](https://github.com/makinacorpus/django-leaflet/tree/master/example) example app.
+.. code-block:: bash
+
+   docker exec -it django-import-export-celery-web-1 bash
+
+.. code-block:: bash
+
+   cd example
+   export DATABASE_HOST=postgres
+   celery -A project worker --loglevel=info -n worker1
+
+The example app will be available from http://localhost:8000/admin/
+
+**Note:** Both Django and Celery need to be running for import/export jobs to work properly.
+
+**Login credentials:**
+- Username: admin
+- Password: admin
+
+Note: parts of this example app were taken from the [django-leaflet](https://github.com/makinacorpus/django-leaflet/tree/master/example) example app.

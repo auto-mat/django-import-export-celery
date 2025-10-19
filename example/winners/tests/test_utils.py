@@ -1,15 +1,15 @@
 from django.test import TestCase, override_settings
 
+from import_export_celery.models import ExportJob
 from import_export_celery.utils import (
-    get_export_job_mail_subject,
-    get_export_job_mail_template,
-    get_export_job_mail_context,
-    get_export_job_email_on_completion,
     DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT,
     DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE,
     DEFAULT_EXPORT_JOB_EMAIL_ON_COMPLETION,
+    get_export_job_email_on_completion,
+    get_export_job_mail_context,
+    get_export_job_mail_subject,
+    get_export_job_mail_template,
 )
-from import_export_celery.models import ExportJob
 
 
 class UtilsTestCases(TestCase):
@@ -48,6 +48,9 @@ class UtilsTestCases(TestCase):
         expected_context = {
             "app_label": "winners",
             "model": "Winner",
-            "link": f"http://127.0.0.1:8000/adminimport_export_celery/exportjob/{export_job.id}/change/",
+            "link": (
+                f"http://127.0.0.1:8000/admin/import_export_celery/exportjob/"
+                f"{export_job.id}/change/"
+            ),
         }
         self.assertEqual(context, expected_context)

@@ -1,29 +1,38 @@
 default_language_version:
-  python: python3.7
+  python: python3.11
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.1.0
+  rev: v5.0.0
   hooks:
   - id: check-added-large-files
   - id: check-case-conflict
   - id: check-merge-conflict
   - id: end-of-file-fixer
   - id: trailing-whitespace
+  - id: check-yaml
+  - id: check-toml
+  - id: check-json
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v2.31.1
+  rev: v3.17.0
   hooks:
   - id: pyupgrade
-    args: [--py37-plus]
+    args: [--py39-plus]
 
 - repo: https://github.com/psf/black
-  rev: 22.3.0
+  rev: 24.10.0
   hooks:
   - id: black
 
+- repo: https://github.com/PyCQA/isort
+  rev: 5.13.2
+  hooks:
+  - id: isort
+    args: ["--profile", "black"]
+
 - repo: https://github.com/PyCQA/flake8
-  rev: 4.0.1
+  rev: 7.1.1
   hooks:
   - id: flake8
     additional_dependencies:
