@@ -142,17 +142,23 @@ def _run_import_job(import_job, dry_run=True):
             cols = lambda row: "</td><td>".join(
                 [str(field) for field in row.values]
             )
-            cols_error = lambda row: "".join(
-                [
-                    "<mark>"
-                    + key
-                    + "</mark>"
-                    + "<br>"
-                    + row.error.message_dict[key][0]
-                    + "<br>"
-                    for key in row.error.message_dict.keys()
-                ]
-            )
+
+            def cols_error(row):
+                if hasattr(row.error, "message_dict"):
+                    return "".join(
+                        [
+                            "<mark>"
+                            + key
+                            + "</mark>"
+                            + "<br>"
+                            + row.error.message_dict[key][0]
+                            + "<br>"
+                            for key in row.error.message_dict.keys()
+                        ]
+                    )
+                else:
+                    return "".join(message + "<br>" for message in row.error.messages)
+
             summary += (
                 "<tr><td>row</td>"
                 + "<td>errors</td><td>"

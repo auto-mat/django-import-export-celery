@@ -6,6 +6,7 @@ from django.urls import reverse
 from import_export.formats.base_formats import DEFAULT_FORMATS
 from importlib import import_module
 
+DEFAULT_EXPORT_JOB_EMAIL_ON_COMPLETION = True
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT = "Django: Export job completed"
 DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE = (
     "email/export_job_completion.html"
@@ -66,6 +67,14 @@ def get_export_job_mail_context(export_job):
         ),
     }
     return context
+
+
+def get_export_job_email_on_completion():
+    return getattr(
+        settings,
+        "EXPORT_JOB_EMAIL_ON_COMPLETION",
+        DEFAULT_EXPORT_JOB_EMAIL_ON_COMPLETION,
+    )
 
 
 def get_export_job_mail_subject():

@@ -4,8 +4,10 @@ from import_export_celery.utils import (
     get_export_job_mail_subject,
     get_export_job_mail_template,
     get_export_job_mail_context,
+    get_export_job_email_on_completion,
     DEFAULT_EXPORT_JOB_COMPLETION_MAIL_SUBJECT,
     DEFAULT_EXPORT_JOB_COMPLETION_MAIL_TEMPLATE,
+    DEFAULT_EXPORT_JOB_EMAIL_ON_COMPLETION,
 )
 from import_export_celery.models import ExportJob
 
@@ -28,6 +30,15 @@ class UtilsTestCases(TestCase):
     @override_settings(EXPORT_JOB_COMPLETION_MAIL_TEMPLATE="mytemplate.html")
     def test_get_export_job_mail_template_overridden(self):
         self.assertEqual("mytemplate.html", get_export_job_mail_template())
+
+    def test_get_export_job_email_on_completion_default(self):
+        self.assertEqual(
+            DEFAULT_EXPORT_JOB_EMAIL_ON_COMPLETION, get_export_job_email_on_completion()
+        )
+
+    @override_settings(EXPORT_JOB_EMAIL_ON_COMPLETION=False)
+    def test_get_export_job_email_on_completion_overridden(self):
+        self.assertEqual(False, get_export_job_email_on_completion())
 
     def test_get_export_job_mail_context(self):
         export_job = ExportJob.objects.create(

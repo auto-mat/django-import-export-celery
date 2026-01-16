@@ -220,27 +220,29 @@ By default, there is no time limit on celery import/export tasks. This can be cu
         IMPORT_EXPORT_CELERY_EXPORT_SOFT_TIME_LIMIT = 300  # 5 minutes
         IMPORT_EXPORT_CELERY_EXPORT_HARD_TIME_LIMIT = 360  # 6 minutes
 
-Customizing email template for export job completion email
+Customizing email settings for export job completion
 ----------------------------------------------------------
 
-By default this is the subject and template used to send the email
+By default the export job completion email uses the following settings
 
 
     ::
 
         Subject: 'Django: Export job completed'
         Email template: 'email/export_job_completion.html'
+        Email on completion: True
 
 
 The default email template can be found `here <https://github.com/auto-mat/django-import-export-celery/blob/master/import_export_celery/templates/email/export_job_completion.html>`__
 
-The default email subject and template can be customized by overriding these values from django settings:-
+The default email subject, template and sending behavior can be customized by overriding these values from django settings:-
 
 
     ::
 
         EXPORT_JOB_COMPLETION_MAIL_SUBJECT="Your custom subject"
         EXPORT_JOB_COMPLETION_MAIL_TEMPLATE="path_to_folder/your_custom_template.html"
+        EXPORT_JOB_EMAIL_ON_COMPLETION = True  # Set to False to disable email
 
 
 The email template will get some context variables that you can use to customize your template.

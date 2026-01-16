@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 from ..fields import ImportExportFileField
 from ..tasks import run_export_job
-from ..utils import get_formats
+from ..utils import get_formats, get_export_job_email_on_completion
 
 
 @with_author
@@ -74,7 +74,7 @@ class ExportJob(models.Model):
 
     email_on_completion = models.BooleanField(
         verbose_name=_("Send me an email when this export job is complete"),
-        default=True,
+        default=get_export_job_email_on_completion,
     )
 
     site_of_origin = models.TextField(
