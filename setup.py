@@ -15,7 +15,9 @@ try:
         .strip()
     )
 except subprocess.CalledProcessError:
-    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d")
+    # BUG SUR HEROKU LORS DU LOAD DONC ON ENLEVE LE
+    # "%H%M%S")
 
 setup(
     name="django-import-export-celery",
