@@ -67,6 +67,12 @@ class ExportJob(models.Model):
         default="",
     )
 
+    resource_kwargs = models.JSONField(
+        verbose_name=_("JSON dict of kwargs for the resource constructor"),
+        default=dict,
+        blank=True,
+    )
+
     queryset = models.TextField(
         verbose_name=_("JSON list of pks to export"),
         null=False,
@@ -110,7 +116,11 @@ class ExportJob(models.Model):
         # apply filter directly on the model.
         resource_class = self.get_resource_class()
         if hasattr(resource_class, "get_export_queryset"):
-            return resource_class().get_export_queryset().filter(pk__in=pks)
+            return (
+                resource_class(**self.resource_kwargs)
+                .get_export_queryset()
+                .filter(pk__in=pks)
+            )
         return self.get_content_type().model_class().objects.filter(pk__in=pks)
 
     def get_resource_choices(self):
