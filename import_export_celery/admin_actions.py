@@ -40,15 +40,14 @@ run_export_job_action.short_description = _("Run export job")
 
 
 def create_export_job_action(modeladmin, request, queryset):
-    if queryset:
-        arbitrary_obj = queryset.first()
+    if queryset is not None:
         ej = ExportJob.objects.create(
-            app_label=arbitrary_obj._meta.app_label,
-            model=arbitrary_obj._meta.model_name,
+            app_label=queryset.model._meta._meta.app_label,
+            model=queryset.model._meta._meta.model_name,
             queryset=json.dumps(
                 [
-                    str(obj.pk) if isinstance(obj.pk, UUID) else obj.pk
-                    for obj in queryset
+                    str(pk) if isinstance(pk, UUID) else pk
+                    for pk in queryset.values_list("pk", flat=True)
                 ]
             ),
             site_of_origin=request.scheme + "://" + request.get_host(),

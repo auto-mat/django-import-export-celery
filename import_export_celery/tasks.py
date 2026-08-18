@@ -1,5 +1,6 @@
 # Author: Timothy Hobbs <timothy <at> hobbs.cz>
 from django.utils import timezone
+from django.db.models import QuerySet
 import os
 
 from celery import shared_task
@@ -221,7 +222,7 @@ def run_export_job(pk):
     export_job = models.ExportJob.objects.get(pk=pk)
     resource_class = export_job.get_resource_class()
     queryset = export_job.get_queryset()
-    qs_len = len(queryset)
+    qs_len = queryset.count() if isinstance(queryset, QuerySet) else len(queryset)
 
     class Resource(resource_class):
         def __init__(self, export_job, *args, **kwargs):
