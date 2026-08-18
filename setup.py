@@ -2,7 +2,6 @@ import codecs
 import os
 from setuptools import setup, find_packages
 import subprocess
-import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,7 +14,11 @@ try:
         .strip()
     )
 except subprocess.CalledProcessError:
-    version = "0.dev" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    # Must be deterministic: pip evaluates setup.py once for metadata and
+    # once for the wheel build, and rejects the wheel if the versions differ.
+    # A time-based version therefore fails any build that crosses a second
+    # boundary between the two calls.
+    version = "0.dev0"
 
 setup(
     name="django-import-export-celery",

@@ -239,7 +239,7 @@ def run_export_job(pk):
             self.row_number += 1
             return super().export_resource(*args, **kwargs)
 
-    resource = Resource(export_job=export_job)
+    resource = Resource(export_job=export_job, **export_job.resource_kwargs)
 
     data = resource.export(queryset)
     format = get_format(export_job)

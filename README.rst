@@ -142,6 +142,39 @@ As with imports, a fully configured example project can be found in the `example
 4. Done!
 
 
+Parameterizing the export resource
+----------------------------------
+
+``ExportJob.resource_kwargs`` is a JSON dict passed as keyword arguments to the
+resource constructor — the asynchronous counterpart of django-import-export's
+``get_export_resource_kwargs()``. It lets one resource class produce different
+exports per job (date ranges, formatting options, …), which is especially
+useful for jobs created programmatically, e.g. on a schedule.
+    ::
+
+        class WinnersParameterizedResource(WinnersResource):
+            def __init__(self, name_contains="", **kwargs):
+                super().__init__(**kwargs)
+                self.name_contains = name_contains
+
+            def get_export_queryset(self):
+                queryset = super().get_export_queryset()
+                if self.name_contains:
+                    queryset = queryset.filter(name__contains=self.name_contains)
+                return queryset
+
+        ExportJob.objects.create(
+            app_label="winners",
+            model="winner",
+            resource="winners_parameterized",
+            resource_kwargs={"name_contains": "Ali"},
+            ...
+        )
+
+The values must be JSON-serializable (they are stored in the database), so
+non-serializable objects like ``request`` cannot be passed this way.
+
+
 Performing exports with celery
 ------------------------------
 
