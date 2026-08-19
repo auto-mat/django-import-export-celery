@@ -1,6 +1,8 @@
 # Copyright (C) 2019 o.s. Auto*Mat
-from django.utils import timezone
 import json
+import warnings
+
+from django.utils import timezone
 
 from author.decorators import with_author
 
@@ -73,8 +75,9 @@ class ExportJob(models.Model):
         blank=True,
     )
 
-    queryset = models.TextField(
-        verbose_name=_("JSON list of pks to export"),
+    queryset = models.JSONField(
+        verbose_name=_("JSON list of pks to export or dict of queryset filters"),
+        default=list,
         null=False,
     )
 
@@ -110,7 +113,33 @@ class ExportJob(models.Model):
         return self._content_type
 
     def get_queryset(self):
-        pks = json.loads(self.queryset)
+        queryset_spec = self.queryset
+        if isinstance(queryset_spec, str):
+            # Call sites written against the TextField era stored json.dumps
+            # output; on a JSONField that assignment silently becomes a JSON
+            # string scalar. Keep those callers working through a
+            # deprecation cycle.
+            warnings.warn(
+                "Storing a JSON-encoded string in ExportJob.queryset is "
+                "deprecated; assign the list or dict itself.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            try:
+                queryset_spec = json.loads(queryset_spec)
+            except ValueError:
+                pass  # not JSON at all; rejected below with the original value
+        if isinstance(queryset_spec, list):
+            # Fixed set of rows, chosen when the job was created.
+            filters = {"pk__in": queryset_spec}
+        elif isinstance(queryset_spec, dict):
+            # Queryset filters, evaluated when the job runs.
+            filters = queryset_spec
+        else:
+            raise ValueError(
+                "ExportJob.queryset must be a JSON list of pks or a dict of "
+                "queryset filters, got %r" % (queryset_spec,)
+            )
         # If customised queryset for the model exists
         # then it'll apply filter on that otherwise it'll
         # apply filter directly on the model.
@@ -119,9 +148,9 @@ class ExportJob(models.Model):
             return (
                 resource_class(**self.resource_kwargs)
                 .get_export_queryset()
-                .filter(pk__in=pks)
+                .filter(**filters)
             )
-        return self.get_content_type().model_class().objects.filter(pk__in=pks)
+        return self.get_content_type().model_class().objects.filter(**filters)
 
     def get_resource_choices(self):
         return [

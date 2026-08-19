@@ -142,6 +142,34 @@ As with imports, a fully configured example project can be found in the `example
 4. Done!
 
 
+Selecting what to export
+------------------------
+
+``ExportJob.queryset`` accepts two JSON shapes:
+
+- **A list of pks** — the fixed set of rows chosen when the job was created.
+  This is what the ``Export with celery`` admin action stores.
+- **A dict of queryset filters** — keyword arguments for ``QuerySet.filter()``,
+  applied to the resource's ``get_export_queryset()`` (or the model's default
+  manager) **when the job runs**. This suits jobs created programmatically on
+  a schedule: a monthly job can say ``{"created__gte": "..."}`` or
+  ``{"is_active": True}`` and export whatever matches at run time.
+    ::
+
+        ExportJob.objects.create(
+            app_label="winners",
+            model="winner",
+            resource="winners",
+            queryset={"name__startswith": "A"},
+            ...
+        )
+
+An empty list exports nothing; an empty dict exports everything the export
+queryset yields. The filters address the resource's export queryset, so
+annotations added there can be filtered on. Anything that is neither a list
+nor a dict raises ``ValueError`` when the job runs.
+
+
 Parameterizing the export resource
 ----------------------------------
 
