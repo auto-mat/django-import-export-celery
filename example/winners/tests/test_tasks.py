@@ -1,5 +1,3 @@
-import json
-
 from django.test import TestCase
 
 from import_export_celery.models import ExportJob
@@ -21,7 +19,7 @@ class RunExportJobResourceKwargsTests(TestCase):
         job = ExportJob.objects.create(
             app_label="winners",
             model="winner",
-            queryset=json.dumps([self.alice.pk, self.bob.pk]),
+            queryset=[self.alice.pk, self.bob.pk],
             site_of_origin="http://testserver",
             email_on_completion=False,
             **({"resource_kwargs": resource_kwargs} if resource_kwargs is not None else {}),

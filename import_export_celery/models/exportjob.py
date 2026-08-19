@@ -1,6 +1,5 @@
 # Copyright (C) 2019 o.s. Auto*Mat
 from django.utils import timezone
-import json
 
 from author.decorators import with_author
 
@@ -73,8 +72,9 @@ class ExportJob(models.Model):
         blank=True,
     )
 
-    queryset = models.TextField(
-        verbose_name=_("JSON list of pks to export"),
+    queryset = models.JSONField(
+        verbose_name=_("JSON list of pks to export or dict of queryset filters"),
+        default=list,
         null=False,
     )
 
@@ -110,7 +110,7 @@ class ExportJob(models.Model):
         return self._content_type
 
     def get_queryset(self):
-        pks = json.loads(self.queryset)
+        pks = self.queryset
         # If customised queryset for the model exists
         # then it'll apply filter on that otherwise it'll
         # apply filter directly on the model.
