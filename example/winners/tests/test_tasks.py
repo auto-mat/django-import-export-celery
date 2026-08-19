@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 
 from import_export_celery.models import ExportJob
@@ -97,6 +99,14 @@ class ExportJobQuerysetFiltersTests(ExportJobTestBase):
         )
         self.assertNotIn("Alice", content)
         self.assertNotIn("Bob", content)
+
+    def test_json_string_spec_works_with_deprecation_warning(self):
+        job = self._create_job(
+            "winners", queryset_spec=json.dumps([self.alice.pk])
+        )
+        with self.assertWarns(DeprecationWarning):
+            queryset = job.get_queryset()
+        self.assertEqual([self.alice], list(queryset))
 
     def test_invalid_spec_raises(self):
         job = self._create_job("winners", queryset_spec="not-a-spec")

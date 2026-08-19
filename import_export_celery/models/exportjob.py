@@ -1,4 +1,7 @@
 # Copyright (C) 2019 o.s. Auto*Mat
+import json
+import warnings
+
 from django.utils import timezone
 
 from author.decorators import with_author
@@ -111,6 +114,21 @@ class ExportJob(models.Model):
 
     def get_queryset(self):
         queryset_spec = self.queryset
+        if isinstance(queryset_spec, str):
+            # Call sites written against the TextField era stored json.dumps
+            # output; on a JSONField that assignment silently becomes a JSON
+            # string scalar. Keep those callers working through a
+            # deprecation cycle.
+            warnings.warn(
+                "Storing a JSON-encoded string in ExportJob.queryset is "
+                "deprecated; assign the list or dict itself.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            try:
+                queryset_spec = json.loads(queryset_spec)
+            except ValueError:
+                pass  # not JSON at all; rejected below with the original value
         if isinstance(queryset_spec, list):
             # Fixed set of rows, chosen when the job was created.
             filters = {"pk__in": queryset_spec}
