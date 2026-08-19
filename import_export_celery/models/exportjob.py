@@ -110,7 +110,18 @@ class ExportJob(models.Model):
         return self._content_type
 
     def get_queryset(self):
-        pks = self.queryset
+        queryset_spec = self.queryset
+        if isinstance(queryset_spec, list):
+            # Fixed set of rows, chosen when the job was created.
+            filters = {"pk__in": queryset_spec}
+        elif isinstance(queryset_spec, dict):
+            # Queryset filters, evaluated when the job runs.
+            filters = queryset_spec
+        else:
+            raise ValueError(
+                "ExportJob.queryset must be a JSON list of pks or a dict of "
+                "queryset filters, got %r" % (queryset_spec,)
+            )
         # If customised queryset for the model exists
         # then it'll apply filter on that otherwise it'll
         # apply filter directly on the model.
@@ -119,9 +130,9 @@ class ExportJob(models.Model):
             return (
                 resource_class(**self.resource_kwargs)
                 .get_export_queryset()
-                .filter(pk__in=pks)
+                .filter(**filters)
             )
-        return self.get_content_type().model_class().objects.filter(pk__in=pks)
+        return self.get_content_type().model_class().objects.filter(**filters)
 
     def get_resource_choices(self):
         return [
