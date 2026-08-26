@@ -13,7 +13,7 @@ Basic installation
 
 2. Add ``'import_export_celery'`` to your ``INSTALLED_APPS`` settings variable
 
-3. Add ``'author.middlewares.AuthorDefaultBackendMiddleware'`` to your ``MIDDLEWARE_CLASSES``
+3. Add ``'author.middlewares.AuthorDefaultBackendMiddleware'`` to your ``MIDDLEWARE``
 
 4. Configure the location of your celery module setup
 
